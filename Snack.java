@@ -1,65 +1,76 @@
-import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+    
 public class Snack extends FoodOrder {
-	
-	private String[] snack = {"Popcorn","Hotdog x2",
-								"French Fries","Sweet Corn",
-								"Nuggets"};
-	
-	private double[] snackCost={8.00,10.00,
-								4.00,4.00,
-								6.00};
-	
+	private String[] snackID = {"S01", "S02", "S03", "S04", "S05"};
+	private Map<String, String> snack = new HashMap<>();
+    private Map<String, Double> snackCost = new HashMap<>();
+
 	public Snack(){
-		this(0,0.0,new ArrayList<>(),0);
+		this(0.0,new HashMap<>(),0);
 	}
 
-    public Snack(int orderNo, double totalPrice, ArrayList<String> order, int itemNo) {
-    	super(orderNo, totalPrice, order, itemNo);	
+    public Snack(double totalPrice, Map<String, Integer> order, int itemNo) {
+    	super(totalPrice, order, itemNo);
+		initializeMenu();
     }
-    
-    //getter 
-    public String getSnackAndCost(){
-    	StringBuilder sb = new StringBuilder();
-    	for(int i=0; i<snack.length; i++){
-    		if(i==0 || i==4)
-    			sb.append(String.format("%d. %-15s RM%.2f\n", i + 1, snack[i], snackCost[i]));
-        	else
-            	sb.append(String.format("%d. %-15s RM%.2f\n", i + 1, snack[i], snackCost[i]));
 
-    	}//for end
-    	
-    	return sb.toString();
-    }
-    /* getter 
-    public String getSnackCost(){
-    	StringBuilder sb = new StringBuilder();
-    	for(int i=0; i<snackCost.length; i++){
-    		sb.append("RM"+snackCost[i]);
-    		if(i<snack.length-1){
-    			sb.append("\n");
-    		}//if end
-    	}//for end
-    	
-    	return sb.toString();
-    }*/
-    
-	//setter methods
-	public void setSnack(String[] snack) {
-		this.snack = snack;
-	}
-	public void setSnackCost(double[] snackCost) {
-		this.snackCost = snackCost;
-	}
 
-    //-------------------other methods-------------------
-    public void addSnack(int choice){
-    	if(choice>0 && choice<=snack.length){
-    		super.addItem(snack[choice-1],snackCost[choice-1]);
-    	}
-    }// method end
-   
-    
-    public String toString(){
-    	return getSnackAndCost();
+    private void initializeMenu() {
+        snack.put("S01", "Popcorn");
+        snack.put("S02", "Hotdog");
+        snack.put("S03", "French Fries");
+        snack.put("S04", "Sweet Corn");
+        snack.put("S05", "Nuggets");
+        
+        snackCost.put("S01", 8.00);
+        snackCost.put("S02", 5.00);
+        snackCost.put("S03", 4.00);
+        snackCost.put("S04", 4.00);
+        snackCost.put("S05", 6.00);
     }
+
+    //getter
+    public String getSnackAndCost() {
+        StringBuilder sb = new StringBuilder();
+        int count = 1;
+        for (String i : snackID) {
+            sb.append(String.format("%d. %-15s RM%.2f\n", 
+                     count, snack.get(i), snackCost.get(i)));
+            count++;
+        }
+        return sb.toString();
+    }
+	public Map<String, Double> getSnackCost() {return snackCost;}
+    public String[] getSnackID() {return snackID;}
+    public Map<String, String> getSnack() {return snack;}
+
+    
+	//setter
+    public void setSnackCost(Map<String, Double> snackCost) {this.snackCost = snackCost;}
+    public void setSnackID(String[] snackID) {this.snackID = snackID;}
+    public void setSnack(Map<String, String> snack) {this.snack = snack;}
+
+    private int foodCounter=0;
+    public void addSnack(int choice, FoodOrder order) {
+        if (choice >= 1 && choice <= snackID.length) {
+            String id = snackID[choice - 1];  // Convert 1 to "S01", 2 to "S02"
+            order.addItem(snack.get(id), snackCost.get(id));
+        } else {
+            System.out.println("Invalid choice! Please enter 1-5");
+        }
+    }
+
+    public String toString(){return getSnackAndCost();}
+
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (!(obj instanceof Snack)) return false;
+        return Arrays.equals(snackID, ((Snack) obj).snackID) &&
+               snack.equals(((Snack) obj).snack) &&
+               snackCost.equals(((Snack) obj).snackCost);
+    }    
+
+
 }

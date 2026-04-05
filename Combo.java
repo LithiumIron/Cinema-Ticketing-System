@@ -1,53 +1,64 @@
-import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
 public class Combo extends FoodOrder {
-    private String[] combo = {"Popcorn + Sprite","Hotdog x2 + Cola",
-                                "French Fries + 100 Plus","Sweet Corn + Sprite",
-                                "Nuggets + Pepsi"};
-    
-    private double[] comboCost={13.00,12.00,
-                                6.00,9.50,
-                                8.00};
-    
+	private String[] comboID = {"C01", "C02", "C03", "C04", "C05"};
+	private Map<String, String> combo = new HashMap<>();
+    private Map<String, Double> comboCost = new HashMap<>(); 
 
 	public Combo(){
-		this(0,0.0,new ArrayList<>(),0);
+		this(0.0,new HashMap<>(),0);
 	}
 
-    public Combo(int orderNo, double totalPrice, ArrayList<String> order, int itemNo) {
-    	super(orderNo, totalPrice, order, itemNo);	
+    public Combo(double totalPrice, Map<String, Integer> order, int itemNo) {
+    	super(totalPrice, order, itemNo);
+		initializeMenu();
     }
     
-    //getter 
-    public String getComboAndCost(){
-    	StringBuilder sb = new StringBuilder();
-    	for(int i=0; i<combo.length; i++){
-    		if(i==0 || i==4)
-    			sb.append(String.format("%d. %-25s RM%.2f\n", i + 1, combo[i], comboCost[i]));
-        	else
-            	sb.append(String.format("%d. %-25s RM%.2f\n", i + 1, combo[i], comboCost[i]));
+    private void initializeMenu() {
+        combo.put("C01", "Popcorn + Sprite");
+        combo.put("C02", "Hotdog x2 + Cola");
+        combo.put("C03", "French Fries + 100 Plus");
+        combo.put("C04", "Sweet Corn + Sprite");
+        combo.put("C05", "Nuggets + Pepsi");
 
-    	}//for end
-    	
-    	return sb.toString();
+        comboCost.put("C01", 13.00);
+        comboCost.put("C02", 12.00);
+        comboCost.put("C03", 6.00);
+        comboCost.put("C04", 9.50);
+        comboCost.put("C05", 8.00);
     }
 
-	//setter methods
-	public void setCombo(String[] combo) {
-		this.combo = combo;
-	}
-	public void setComboCost(double[] comboCost) {
-		this.comboCost = comboCost;
-	}
+    //getter
+    public String getComboAndCost() {
+        StringBuilder sb = new StringBuilder();
+        int count = 1;
+        for (String i : comboID) {
+            sb.append(String.format("%d. %-15s RM%.2f\n", 
+                     count, combo.get(i), comboCost.get(i)));
+            count++;
+        }
+        return sb.toString();
+    }
+	public Map<String, Double> getComboCost() {return comboCost;}
+    public String[] getComboID() {return comboID;}
+    public Map<String, String> getCombo() {return combo;}
 
-    //-------------------other methods-------------------
-    public void addCombo(int choice){
-    	if(choice>0 && choice<=combo.length){
-    		super.addItem(combo[choice-1],comboCost[choice-1]);
-    	}
-    }// method end
+    
+	//setter
+    public void setComboCost(Map<String, Double> comboCost) {this.comboCost = comboCost;}
+    public void setComboID(String[] comboID) {this.comboID = comboID;}
+    public void setCombo(Map<String, String> combo) {this.combo = combo;}
+
+     public void addCombo(int choice, FoodOrder order) {
+        if (choice >= 1 && choice <= comboID.length) {
+            String id = comboID[choice - 1];  // Convert 1 to "C01", 2 to "C02"
+            order.addItem(combo.get(id), comboCost.get(id));
+        } else {
+            System.out.println("Invalid choice! Please enter 1-5");
+        }
+    }
+    
    
-    
-    public String toString(){
-    	return getComboAndCost();
-    }
+    public String toString(){return getComboAndCost();}
 }
