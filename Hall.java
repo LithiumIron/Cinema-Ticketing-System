@@ -314,5 +314,43 @@ public class Hall {
         System.out.println("\nHall Capacity: 143 seats");
     }
 
+
+        //=========== customer Section ===========
+
+                                                                                                                                                                                                    private int getSeatHallNumber() {
+    switch (type) {
+        case "Small": return Seat.SMALL_HALL;
+        case "Medium": return Seat.MEDIUM_HALL;
+        case "Large": return Seat.LARGE_HALL;
+        default: return 1;
+    }
+}
+
+// Display seat map for this hall
+    public void displaySeatMap() {
+        int hallNo = getSeatHallNumber();
+        Seat.displaySeatMap(hallNo);
+    }
     
+    // Book a seat 
+    public void bookSeat(String seatInput) {
+        int hallNo = getSeatHallNumber();
+        System.out.println("\n        " + getType() + " Hall");
+        System.out.println("      ---------------");
+        System.out.println("   __/    SCREEN     \\__");
+        System.out.println("");
+        Seat.bookSeat(hallNo, seatInput);  
+    }
+    
+    // Cancel a booking in this hall
+    public void cancelBooking(String seatInput) {
+        int hallNo = getSeatHallNumber();
+        Seat.cancelBooking(hallNo, seatInput);
+    }
+
+    // View all booked seats in this hall
+    public void viewBookedSeats() {
+        int hallNo = getSeatHallNumber();
+        Seat.viewBookedSeats(hallNo);
+    }
 }
