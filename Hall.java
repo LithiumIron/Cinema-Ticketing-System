@@ -334,12 +334,15 @@ public class Hall {
     
     // Book a seat 
     public void bookSeat(String seatInput) {
+        
         int hallNo = getSeatHallNumber();
+        Utils.clearScreen(80);
         System.out.println("\n        " + getType() + " Hall");
         System.out.println("      ---------------");
         System.out.println("   __/    SCREEN     \\__");
         System.out.println("");
         Seat.bookSeat(hallNo, seatInput);  
+        
     }
     
     // Cancel a booking in this hall
@@ -348,9 +351,4 @@ public class Hall {
         Seat.cancelBooking(hallNo, seatInput);
     }
 
-    // View all booked seats in this hall
-    public void viewBookedSeats() {
-        int hallNo = getSeatHallNumber();
-        Seat.viewBookedSeats(hallNo);
-    }
 }
