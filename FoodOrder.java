@@ -24,17 +24,9 @@ public class FoodOrder {
     }
     
     //getter
-    public static int getOrderNo() {
-        return orderNo;
-    }
- 
-    public int getItemNo(){
-    	return itemNo;
-    }
-    
-    public double getTotalPrice() {
-        return totalPrice;
-    }
+    public static int getOrderNo() {return orderNo;}
+    public int getItemNo(){return itemNo;}
+    public double getTotalPrice() {return totalPrice;}
        
     public String getOrder() {
         StringBuilder sb = new StringBuilder();
@@ -55,18 +47,10 @@ public class FoodOrder {
     }//method end
     
     //setter
-    public static void setOrderNo(int orderNo) {
-        FoodOrder.orderNo = orderNo;
-    }
-    
-    public void setItemNo(int itemNo){
-    	this.itemNo=itemNo;
-    }
+    public static void setOrderNo(int orderNo) {FoodOrder.orderNo = orderNo;}
+    public void setItemNo(int itemNo){this.itemNo=itemNo;}
+    public void setTotalPrice(double totalPrice) {this.totalPrice = totalPrice;}
 
-    public void setTotalPrice(double totalPrice) {
-        this.totalPrice = totalPrice;
-    }
-    
     public void setOrder(HashMap<String, Integer> order) {     //to reset & make a new orders
         this.order.clear();
         this.order.putAll(order);
@@ -74,11 +58,12 @@ public class FoodOrder {
     }
 
     //------------other methods------------
-    //add order number
-    public void addOrderNo(){
-    	orderNo++;
-    }//add order number end
-    
+    public void deleteOrder(){
+        this.order.clear();
+        this.totalPrice=0.0;
+        this.itemNo=this.order.size();
+        System.out.println("Order cancelled!");
+    }
     public void addItem(String name, double price) {
         // Increase quantity if already exists
         if (order.containsKey(name)) {

@@ -63,7 +63,7 @@ public class mh_main {
                 case 6:{
                     Utils.clearScreen(20);
                     Movie.displayMovieSummary();
-                    Utils.pause(scan);
+                     Utils.pause();
                 }break;
                 case 0:back = true;break;
             }
@@ -113,7 +113,7 @@ public class mh_main {
         System.out.println("\nMovie Added:");
         System.out.println(m);
 
-        Utils.pause(scan);
+         Utils.pause();
     }
 
     //---delete movie---
@@ -133,7 +133,7 @@ public class mh_main {
             System.out.println("Deletion cancelled.");
         }
 
-        Utils.pause(scan);
+         Utils.pause();
     }
 
     //---update movie---
@@ -160,7 +160,7 @@ public class mh_main {
             }
         }
 
-        Utils.pause(scan);
+         Utils.pause();
     }
 
     // ================== HALL ==================
@@ -218,7 +218,7 @@ public class mh_main {
         int type = Utils.getIntRange(scan, 1, 3);
         Hall.addHallByType(type);
 
-        Utils.pause(scan);
+         Utils.pause();
     }
 
     // ================== EXIT ==================

@@ -165,7 +165,7 @@ public class Hall {
         Hall h = findHallById(id);
         if (h == null) {
             System.out.println("Hall ID not found!");
-            Utils.pause(scan);
+            Utils.pause();
             return;
         }
 
@@ -204,7 +204,7 @@ public class Hall {
         System.out.println("Total Number of Halls: " + hallList.size());
         System.out.println("================================");
 
-        Utils.pause(scan);
+         Utils.pause();
     }
 
     //---display all halls---
@@ -233,7 +233,7 @@ public class Hall {
 
         System.out.println("\nTotal halls: " + hallList.size());
 
-        Utils.pause(scan);
+         Utils.pause();
     }
 
     // ==================== SEAT MAP DISPLAY ====================
@@ -260,7 +260,7 @@ public class Hall {
                 case 3: printLargeHall();break;
             }
 
-            Utils.pause(scan);
+             Utils.pause();
         }
     }
 

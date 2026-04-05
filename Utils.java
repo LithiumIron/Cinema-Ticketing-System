@@ -1,14 +1,14 @@
 import java.util.Scanner;
 
 public class Utils {
-
+    public static Scanner sc=new Scanner(System.in);
     //clear screen
     public static void clearScreen(int lines) {
         for (int i = 0; i < lines; i++) System.out.println();
     }
   
     //pause
-    public static void pause(Scanner sc) {
+    public static void pause() {
         System.out.print("\nPress Enter to continue...");
         sc.nextLine();
     }

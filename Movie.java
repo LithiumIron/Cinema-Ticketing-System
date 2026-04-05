@@ -229,7 +229,7 @@ public class Movie {
         System.out.println("\nMovie status updated successfully!");
         System.out.println(movie.toString());
 
-        Utils.pause(scan);
+         Utils.pause();
     }
 
     // ==================== DISPLAY METHODS ====================
@@ -277,7 +277,7 @@ public class Movie {
             Utils.clearScreen(80);
             printTable(list, title);
 
-            Utils.pause(scan);
+             Utils.pause();
             Utils.clearScreen(80);
         }
     }
