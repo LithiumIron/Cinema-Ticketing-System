@@ -317,18 +317,41 @@ public class Hall {
 
         //=========== customer Section ===========
 
-                                                                                                                                                                                                    private int getSeatHallNumber() {
-    switch (type) {
-        case "Small": return Seat.SMALL_HALL;
-        case "Medium": return Seat.MEDIUM_HALL;
-        case "Large": return Seat.LARGE_HALL;
-        default: return 1;
-    }
+                                                                                                                                                                                                    
+    private int getSeatHallNumber() {
+        switch (type) {
+            case "Small": return Seat.SMALL_HALL;
+            case "Medium": return Seat.MEDIUM_HALL;
+            case "Large": return Seat.LARGE_HALL;
+            default: return 1;
+        }
 }
 
 // Display seat map for this hall
     public void displaySeatMap() {
         int hallNo = getSeatHallNumber();
+        Utils.clearScreen(80);
+        switch(hallNo) {
+            case Seat.SMALL_HALL: 
+                System.out.println("\n        " + getType() + " Hall");
+                System.out.println("      ---------------");
+                System.out.println("   __/    SCREEN     \\__");
+                System.out.println("");
+                break;
+            case Seat.MEDIUM_HALL:
+                System.out.println("            Medium Hall");
+                System.out.println("      -------------------------");
+                System.out.println("  ___/         SCREEN         \\___");
+                System.out.println("");
+                break;
+            case Seat.LARGE_HALL:
+                System.out.println("            Large Hall");
+                System.out.println("        -----------------");
+                System.out.println("   ____/      SCREEN     \\____");
+                System.out.println("");
+                break;
+        }
+        
         Seat.displaySeatMap(hallNo);
     }
     
@@ -336,11 +359,6 @@ public class Hall {
     public void bookSeat(String seatInput) {
         
         int hallNo = getSeatHallNumber();
-        Utils.clearScreen(80);
-        System.out.println("\n        " + getType() + " Hall");
-        System.out.println("      ---------------");
-        System.out.println("   __/    SCREEN     \\__");
-        System.out.println("");
         Seat.bookSeat(hallNo, seatInput);  
         
     }
