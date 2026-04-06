@@ -61,19 +61,29 @@ public class CustomerMenu {
     
     private static void hallMenu(Hall hall) {
         while (true) {
+            Utils.clearScreen(80);
             System.out.println("\n=================================");
-            System.out.println("           " + hall.getType() + " Hall");
-            System.out.println("=================================");
-            System.out.println("1. View Seat Map");
-            System.out.println("2. Book a Seat");
-            System.out.println("3. Cancel Booking");
-            System.out.println("4. Order Food");
-            System.out.println("5. Go Back");
+            System.out.println("|          Select Seat          |");
+            System.out.println("+===============================+");
+            System.out.println("|   1. View Seat Map            |");
+            System.out.println("|   2. Book a Seat              |");
+            System.out.println("|   3. Cancel Booking           |");
+            System.out.println("|   4. Order Food               |");
+            System.out.println("|   5. Go Back                  |");
             System.out.println("=================================");
             System.out.print("Enter choice: ");
+
+            if(!scan.hasNextInt()){
+                System.out.println("Invalid choice! Please enter a number."); 
+                scan.nextLine();
+                Utils.pause();
+                continue;
+            }
             
             int choice = scan.nextInt();
             scan.nextLine();
+            
+            
             
             switch (choice) {
                 case 1:
@@ -100,6 +110,9 @@ public class CustomerMenu {
                 default:
                     System.out.println("Invalid choice!");
             }// switch end
+            
+            
+
 
         }//while end
 
@@ -113,16 +126,16 @@ public class CustomerMenu {
         Combo c1= new Combo();
         
         while (true) {
-        
+                Utils.clearScreen(80);
                 System.out.println("\n=================================");
-                System.out.println("          Food Menu");
-                System.out.println("=================================");
-                System.out.println("1. Snack");
-                System.out.println("2. Drinks");
-                System.out.println("3. Combo");
-                System.out.println("4. View Order");
-                System.out.println("5. Cancel Order");
-                System.out.println("6. Done Ordering");
+                System.out.println("|         Food Menu             |");
+                System.out.println("+===============================+");
+                System.out.println("|   1. Snack                    |");
+                System.out.println("|   2. Drinks                   |");
+                System.out.println("|   3. Combo                    |");
+                System.out.println("|   4. View Order               |");
+                System.out.println("|   5. Cancel Order             |");
+                System.out.println("|   6. Done Ordering            |");
                 System.out.println("=================================");
                 System.out.print("Enter choice: ");
 
@@ -131,21 +144,26 @@ public class CustomerMenu {
 
                 switch (choice) {
                     case 1: 
-                        System.out.println("===================");
-                        System.out.println("   Snacks Menu");
-                        System.out.println("===================");
+                        Utils.clearScreen(80);
+                        System.out.println("=================================");
+                        System.out.println("|          Snacks Menu          |");
+                        System.out.println("=================================");
                         System.out.print(s1.toString());
+                        System.out.println("=================================");
                         System.out.print("Enter choice: ");
 
                         int snack=scan.nextInt();
                         scan.nextLine(); //clean buffer
+
                         s1.addSnack(snack, f1);     
                         break;
                     case 2: 
-                        System.out.println("===================");
-                        System.out.println("    Drinks Menu");
-                        System.out.println("===================");  
+                        Utils.clearScreen(80);
+                        System.out.println("=================================");
+                        System.out.println("|          Drinks Menu          |");
+                        System.out.println("=================================");;  
                         System.out.print(d1.toString());
+                        System.out.println("=================================");
                         System.out.print("Enter choice: ");
 
                         int drink=scan.nextInt();
@@ -153,10 +171,12 @@ public class CustomerMenu {
                         d1.addDrink(drink,f1);  
                         break;
                     case 3: 
-                        System.out.println("===================");
-                        System.out.println("    Combos Menu");
-                        System.out.println("===================");
-                        System.out.print(c1.toString());                        
+                        Utils.clearScreen(80);
+                        System.out.println("================================================");
+                        System.out.println("|                 Combos Menu                  |");
+                        System.out.println("================================================");
+                        System.out.print(c1.toString());    
+                        System.out.println("================================================");                    
                         System.out.print("Enter choice: ");
 
                         int combo=scan.nextInt();
@@ -173,9 +193,10 @@ public class CustomerMenu {
                         f1.deleteOrder();
                         break;
                     case 6: 
-                            System.out.println(f1.toString());
+                            System.out.println("\n"+f1.toString());
                             f1.saveOrder();
                             System.out.println("Thank you for your order!");
+                            Utils.pause();
                             return;
                     default: System.out.println("Invalid choice!"); continue;
                 
