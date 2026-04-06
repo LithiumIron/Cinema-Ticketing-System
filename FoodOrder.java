@@ -3,18 +3,19 @@
 import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Scanner;
 
 public class FoodOrder {
 //data properties
     private static int orderNo=0;
     private int itemNo=0;    
-    private double totalPrice=0.0;
+    private double totalPrice=0.00;
     private Map<String, Integer> order = new HashMap<>();  
     
     public FoodOrder(){
     	this(0.0,new HashMap<>(),0);
-        System.out.println(orderNo);
     }
+
     public FoodOrder(double totalPrice,Map<String, Integer> order,int itemNo){
     	this.totalPrice=totalPrice;
     	this.order=new HashMap<>(order);
@@ -33,7 +34,7 @@ public class FoodOrder {
         for (String name : order.keySet()) {
             int qty = order.get(name);
             if (qty > 1) {
-                sb.append(name + " x" + qty + ", ");
+                sb.append("(" +name + ") x" + qty + ", ");
             } else {
                 sb.append(name + ", ");
             }
@@ -74,10 +75,25 @@ public class FoodOrder {
         totalPrice += price;
         itemNo++;
     }
+    //size interface
+    public int displayFoodSize(){
+        Scanner scan=new Scanner(System.in);
+        System.out.println("\n=================================");
+        System.out.println("|       Select Item Size        |");
+        System.out.println("+===============================+");
+        System.out.println("|   1. Large                    |");
+        System.out.println("|   2. Regular                  |");
+        System.out.println("|   3. Go Back                  |");
+        System.out.println("=================================");
+        System.out.print("Enter choice: ");
+
+        return scan.nextInt();
+
+    }
 
     //cost size
     public double largeCost(double price){
-    	return price*2;
+    	return price*1.5;
     }//double end
 
 
@@ -117,9 +133,8 @@ public class FoodOrder {
     
     
     public String toString(){
-        return "Order No: "+orderNo+
-                "\nOrder: "+getOrder()+
-                "\nCost: RM"+totalPrice;
-    }    
+        return String.format("Order No: %d\nOrder: %s\nCost: RM%.2f", 
+                            orderNo, getOrder(), totalPrice);
+    }  
     
 }//class end
