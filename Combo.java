@@ -16,11 +16,11 @@ public class Combo extends FoodOrder {
     }
     
     private void initializeMenu() {
-        combo.put("C01", "Popcorn + Sprite");
-        combo.put("C02", "Hotdog x2 + Cola");
-        combo.put("C03", "French Fries + 100 Plus");
-        combo.put("C04", "Sweet Corn + Sprite");
-        combo.put("C05", "Nuggets + Pepsi");
+        combo.put("C01", "Popcorn + Sprite (Regular)");
+        combo.put("C02", "Hotdog x2 + Cola (Regular)");
+        combo.put("C03", "French Fries + 100 Plus (Regular)");
+        combo.put("C04", "Sweet Corn + Sprite (Regular)");
+        combo.put("C05", "Nuggets + Pepsi (Regular)");
 
         comboCost.put("C01", 13.00);
         comboCost.put("C02", 12.00);
@@ -34,7 +34,7 @@ public class Combo extends FoodOrder {
         StringBuilder sb = new StringBuilder();
         int count = 1;
         for (String i : comboID) {
-            sb.append(String.format("%d. %-15s RM%.2f\n", 
+            sb.append(String.format("%d. %-34s| RM%.2f\n", 
                      count, combo.get(i), comboCost.get(i)));
             count++;
         }
@@ -50,12 +50,12 @@ public class Combo extends FoodOrder {
     public void setComboID(String[] comboID) {this.comboID = comboID;}
     public void setCombo(Map<String, String> combo) {this.combo = combo;}
 
-     public void addCombo(int choice, FoodOrder order) {
+    public void addCombo(int choice, FoodOrder order) {
         if (choice >= 1 && choice <= comboID.length) {
             String id = comboID[choice - 1];  // Convert 1 to "C01", 2 to "C02"
+            
             order.addItem(combo.get(id), comboCost.get(id));
-        } else {
-            System.out.println("Invalid choice! Please enter 1-5");
+            
         }
     }
     
