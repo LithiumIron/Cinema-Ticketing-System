@@ -36,13 +36,19 @@ public class Snack extends FoodOrder {
         StringBuilder sb = new StringBuilder();
         int count = 1;
         for (String i : snackID) {
-            sb.append(String.format("%d. %-15s RM%.2f\n", 
+            sb.append(String.format("%d. %-21s| RM%.2f\n", 
                      count, snack.get(i), snackCost.get(i)));
             count++;
         }
         return sb.toString();
     }
-	public Map<String, Double> getSnackCost() {return snackCost;}
+    public double getSnackCost(int index) {
+        if (index >= 0 && index < snackID.length) {
+            String id = snackID[index];
+            return snackCost.get(id);
+        }
+        return 0.0;
+    }
     public String[] getSnackID() {return snackID;}
     public Map<String, String> getSnack() {return snack;}
 
@@ -52,13 +58,21 @@ public class Snack extends FoodOrder {
     public void setSnackID(String[] snackID) {this.snackID = snackID;}
     public void setSnack(Map<String, String> snack) {this.snack = snack;}
 
-    private int foodCounter=0;
     public void addSnack(int choice, FoodOrder order) {
         if (choice >= 1 && choice <= snackID.length) {
             String id = snackID[choice - 1];  // Convert 1 to "S01", 2 to "S02"
-            order.addItem(snack.get(id), snackCost.get(id));
-        } else {
-            System.out.println("Invalid choice! Please enter 1-5");
+            String name = snack.get(id);
+            double price = snackCost.get(id);
+            
+            int size = order.displayFoodSize();  // Reusable!
+            
+            if (size == 1) {
+                price = order.largeCost(price);
+                order.addItem(name + " (Large)", price);
+            } 
+            else if (size == 2) {
+                order.addItem(name + " (Regular)", price);
+            }
         }
     }
 
