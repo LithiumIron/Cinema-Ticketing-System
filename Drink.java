@@ -34,7 +34,7 @@ public class Drink extends FoodOrder {
         StringBuilder sb = new StringBuilder();
         int count = 1;
         for (String i : drinkID) {
-            sb.append(String.format("%d. %-15s RM%.2f\n", 
+            sb.append(String.format("%d. %-21s| RM%.2f\n", 
                      count, drink.get(i), drinkCost.get(i)));
             count++;
         }
@@ -50,12 +50,21 @@ public class Drink extends FoodOrder {
     public void setDrinkID(String[] drinkID) {this.drinkID = drinkID;}
     public void setDrink(Map<String, String> drink) {this.drink = drink;}
 
-     public void addDrink(int choice, FoodOrder order) {
+    public void addDrink(int choice, FoodOrder order) {
         if (choice >= 1 && choice <= drinkID.length) {
-            String id = drinkID[choice - 1];  // Convert 1 to "D01", 2 to "D02"
-            order.addItem(drink.get(id), drinkCost.get(id));
-        } else {
-            System.out.println("Invalid choice! Please enter 1-5");
+            String id = drinkID[choice - 1];  // Convert 1 to "S01", 2 to "S02"
+            String name = drink.get(id);
+            double price = drinkCost.get(id);
+            
+            int size = order.displayFoodSize();  // Reusable!
+            
+            if (size == 1) {
+                price = order.largeCost(price);
+                order.addItem(name + " (Large)", price);
+            } 
+            else if (size == 2) {
+                order.addItem(name + " (Regular)", price);
+            }
         }
     }
 
