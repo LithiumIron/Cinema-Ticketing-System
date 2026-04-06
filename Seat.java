@@ -160,46 +160,38 @@ public class Seat {
             Seat.goBack();
             return false;
         }
+        //validate blank input
+        if(seatInput.trim().isEmpty()){
+            System.out.println("Invalid input! Please enter a seat number (e.g. A5)");
+            Seat.goBack();
+            return false;
+        }
         
-        // Parse seat input (e.g., "C5" or "Da")
+        //combine seat input (e.g., C5 or Da)
         char rowChar = Character.toUpperCase(seatInput.charAt(0));
         String colDisplay = seatInput.substring(1);
         
         int rowIndex = getRowIndex(rowChar);
         int colIndex = getColIndex(colDisplay, hallNo);
-        
-        if (rowIndex == -1 || colIndex == -1) {
-        
-            Seat.displaySeatMap(hallNo);
-            System.out.println("\nInvalid seat!");
-            Seat.goBack();
-            return false;
-        }
-        
-        if (rowIndex >= rows || colIndex >= cols) {
+
+  
+        if (rowIndex >= 0 && rowIndex < rows && colIndex >= 0 && colIndex < cols) {
+            Seat seat = seats[rowIndex][colIndex]; 
             
-            Seat.displaySeatMap(hallNo);
-            System.out.println("\nSeat out of range!");
-            Seat.goBack();
-            return false;
-        }
+            if (seat.isBooked()) {
+                System.out.println("\nSeat " + seatInput + " is already booked!");
+            } else {
+                seat.setBooked(true);
+                System.out.println("\nSeat " + seatInput + " booked successfully!");
+                saveToFile();
+            }
+        } else 
+            System.out.println("\nInvalid seat! Please enter a valid seat number (e.g. A5)");
         
-        Seat seat = seats[rowIndex][colIndex];
         
-        if (seat.isBooked) {
-             
-            Seat.displaySeatMap(hallNo);
-            System.out.println("\nSeat " + seatInput + " is already booked!");
-            Seat.goBack();
-            return false;
-        }
-        
-        seat.setBooked(true);
-         
-        System.out.println("\nSeat " + seatInput + " booked successfully!");
         Seat.goBack();
-        saveToFile();
         return true;
+
     }
     
     // ========== CANCEL BOOKING ==========
@@ -211,36 +203,41 @@ public class Seat {
         if (seats == null) {
              
             System.out.println("Hall not found!");
+            Seat.goBack();
             return false;
         }
-        
+
+        //validate blank input
+        if(seatInput.trim().isEmpty()){
+            System.out.println("Invalid input! Please enter a seat number (e.g. A5)");
+            Seat.goBack();
+            return false;
+        }
+
         char rowChar = Character.toUpperCase(seatInput.charAt(0));
         String colDisplay = seatInput.substring(1);
         
         int rowIndex = getRowIndex(rowChar);
         int colIndex = getColIndex(colDisplay, hallNo);
+
+        if (rowIndex >= 0 && rowIndex < rows && colIndex >= 0 && colIndex < cols) {
+            Seat seat = seats[rowIndex][colIndex]; 
+            
+            if (!seat.isBooked()) {
+                System.out.println("\nSeat " + seatInput + " is not booked!");
+            } else {
+                seat.setBooked(false);
+                System.out.println("\nSeat " + seatInput + " cancelled successfully!");
+                saveToFile();
+            }
+        } 
+        else 
+            System.out.println("\nInvalid seat! Please enter a valid seat number (e.g. A5)");
         
-        if (rowIndex == -1 || colIndex == -1) {
-             
-            System.out.println("Invalid seat!");
-            return false;
-        }
         
-        Seat seat = seats[rowIndex][colIndex];
-        
-        if (!seat.isBooked) {
-             
-            System.out.println("Seat " + seatInput + " is not booked!");
-            return false;
-        }
-        
-        seat.setBooked(false);
-         
-        System.out.println("\nSeat " + seatInput + " cancelled successfully!");
-        saveToFile();
+        Seat.goBack();
         return true;
     }
-    
     
     // ========== GET AVAILABLE/BOOKED COUNTS ==========
     private static int getAvailableCount(int hallNo) {
@@ -263,7 +260,8 @@ public class Seat {
         return (getRow(hallNo) * getCol(hallNo)) - getAvailableCount(hallNo);
     }
     
-    // ========== HELPER METHODS ==========
+    //======================================================
+
     private static int getRowIndex(char rowChar) {
         switch (rowChar) {
             case 'A': return 0;
@@ -310,6 +308,11 @@ public class Seat {
         if (col == 14) return "e";
         if (col == 15) return "f";
         return "";
+    }
+
+    public static void goBack(){
+        System.out.print("\nPress Enter to go back...");
+            scan.nextLine();
     }
     
     // ========== FILE STORAGE ==========
@@ -363,10 +366,6 @@ public class Seat {
         }
     }
 
-    public static void goBack(){
-        System.out.print("\nPress Enter to go back...");
-            scan.nextLine();
-    }
 
     public String toString() {
         char rowLetter = (char)('A' + row);
