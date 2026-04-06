@@ -1,4 +1,4 @@
-public class Customer extends User {
+ class Customer extends User {
  
     private String customerID;
     private int    rewardPoint;
@@ -35,8 +35,7 @@ public class Customer extends User {
         System.out.println("  |       CUSTOMER MENU          |");
         System.out.println("  +===============================");
         System.out.println("  |  [1] View My Profile         |");
-        System.out.println("  |  [2] View All Customers      |");
-        System.out.println("  |  [3] Delete My Account       |");
+        System.out.println("  |  [2] Delete My Account       |");
         System.out.println("  |  [0] Logout                  |");
         System.out.println("  ================================");
     }
