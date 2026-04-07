@@ -1,3 +1,4 @@
+
 public class Ticket {
 //data properties
 private String ticketID;
@@ -42,16 +43,22 @@ public void setTicketType(String ticketType){
 	this.ticketType = ticketType;
 }
 
-public void setTicketAmt(double ticketType){
+public void setTicketAmt(double ticketAmt){
 	this.ticketAmt = ticketAmt;
 }
 
 
 //------------------ other methods --------------------
-public static String ticketHeader(){
-	return String.format("\t\t\t\t%-15s \n\t\t\t\t%-15s \n\t\t\t\t%-15s\n\n%-15s %-17s %-12s\n%-15s %-17s %-12s\n", 
-							"========", " Ticket", "========",
-							"Ticket ID", "Ticket Type", "Ticket Price", "=========", "===========", "============" );
+public static String ticketHeader1(){
+	return String.format("\n%-18s \n%-18s \n%-18s\n\n", 
+							" ====================", "|      Ticket        |", " ====================");
+}
+
+public static String ticketHeader2(){
+	return String.format("%-20s \n%-20s \n%-20s\n\n%-15s %-17s %-12s\n%-15s %-17s %-12s\n",
+							" ======================", "|    Ticket Summary    |", " ======================",
+							"Ticket ID", "Ticket Type", "Ticket Price", 
+							"=========", "===========", "============");
 }
 
 public static String noOfTickets(){
@@ -59,14 +66,14 @@ public static String noOfTickets(){
 }
 
 public static String selectHallSize(){
-	return "Please select a hall size.\n" +
+	return "\nPlease select a hall size.\n" +
 			"1. Small\n" +
 			"2. Medium\n" +
 			"3. Large\n" +
 			"Enter your choice for hall size : ";
 }
 public static String selectTicketType1(){
-	return "[Small Hall] Please select a ticket type.\n" +
+	return "\n[Small Hall] Please select a ticket type.\n" +
 			"1. Adult  - RM 15.00\n" +
 			"2. Child  - RM 10.00\n" +
 			"3. Senior - RM 10.00\n" +
@@ -74,7 +81,7 @@ public static String selectTicketType1(){
 } 
 
 public static String selectTicketType2(){
-	return "[Medium Hall] Please select a ticket type.\n" +
+	return "\n[Medium Hall] Please select a ticket type.\n" +
 			"1. Adult  - RM 20.00\n" +
 			"2. Child  - RM 12.00\n" +
 			"3. Senior - RM 12.00\n" +
@@ -82,7 +89,7 @@ public static String selectTicketType2(){
 } 
 
 public static String selectTicketType3(){
-	return "[Large Hall] Please select a ticket type.\n" +
+	return "\n[Large Hall] Please select a ticket type.\n" +
 			"1. Adult  - RM 25.00\n" +
 			"2. Child  - RM 15.00\n" +
 			"3. Senior - RM 15.00\n" +
@@ -100,6 +107,10 @@ public static double calculateTicketTotal(Ticket [] tic){
 public static String printTotal(Ticket [] tic){
 	return String.format("%-15s %-11s \t  RM%.2f", " ", "Total:", calculateTicketTotal(tic));
 	
+}
+
+public static String invalidType(){
+	return "Invalid ticket type! Please select again.";
 }
 
 public static String sizeInvalidMsg(){
