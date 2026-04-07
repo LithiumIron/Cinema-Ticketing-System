@@ -7,70 +7,85 @@ public class Testing {
 
         // --- SECTION 1: TICKET SELECTION (from TestTicket) ---
         Ticket t1 = new Ticket();
-    
-        System.out.print(Ticket.ticketHeader1());
-       	System.out.print(Ticket.noOfTickets());
-        int tickets = scan.nextInt();
-        Ticket [] tic = new Ticket[tickets];
-        scan.nextLine(); // Clear buffer
+   
+        int tickets = -1;
+
+		do {
+    		System.out.print(Ticket.ticketHeader1());
+    		System.out.print(Ticket.noOfTickets());
+
+    		if (scan.hasNextInt()) {
+        		tickets = scan.nextInt();
+        		scan.nextLine(); // Clear buffer
+    		} else {
+        		System.out.println("Invalid input. Please enter a number.");
+        		scan.nextLine(); // Discard incorrect input
+    		}
+
+		} while (tickets <= 0);
+
+			Ticket[] tic = new Ticket[tickets];
+    	
        
-        int size;
+        int size = -1;
         System.out.print("\n ======================");
         System.out.print("\n|       Hall Size      |");
         System.out.print("\n ======================");
         do {
             System.out.print(Ticket.selectHallSize());
-            size = scan.nextInt();
-            scan.nextLine();
-            if(size < 1 || size > 3)
-                System.out.println(Ticket.sizeInvalidMsg());
+            
+            if(scan.hasNextInt()){
+            	size = scan.nextInt();
+            	scan.nextLine();//clear buffer
+            }
+            else {
+            	System.out.print(" ");
+            	scan.nextLine();// discard incorrect input
+            }
+     		if(size < 1 || size > 3){
+     			System.out.println(Ticket.sizeInvalidMsg());
+     		}
         } while (size < 1 || size > 3);
         
-        for (int i=0 ; i<tickets ; i++) {
-            String ticketType = "";
-            int choice = -1;
-            double ticketAmt = 0;
-            
-            do {
-                switch(size) {
-                    case 1:
-                        System.out.print(Ticket.selectTicketType1() + (i + 1) + ": ");
-                        choice = scan.nextInt();
-                        scan.nextLine();
-                        switch(choice) {
-                            case 1: ticketType = "Adult"; ticketAmt = 15.00; break;
-                            case 2: ticketType = "Child"; ticketAmt = 10.00; break;
-                            case 3: ticketType = "Senior"; ticketAmt = 10.00; break;
-                            default: System.out.println("Invalid choice. Please enter again!"); break;
-                        }
-                        break;
-                    case 2:
-                        System.out.print(Ticket.selectTicketType2() + (i + 1) + ": ");
-                        choice = scan.nextInt();
-                        scan.nextLine();
-                        switch(choice) {
-                            case 1: ticketType = "Adult"; ticketAmt = 20.00; break;
-                            case 2: ticketType = "Child"; ticketAmt = 12.00; break;
-                            case 3: ticketType = "Senior"; ticketAmt = 12.00; break;
-                            default: System.out.println("Invalid choice. Please enter again!"); break;
-                        }
-                        break;
-                    case 3:	
-                        System.out.print(Ticket.selectTicketType3() + (i + 1) + ": ");
-                        choice = scan.nextInt();
-                        scan.nextLine();
-                        switch(choice) {
-                            case 1: ticketType = "Adult"; ticketAmt = 25.00; break;
-                            case 2: ticketType = "Child"; ticketAmt = 15.00; break;
-                            case 3: ticketType = "Senior"; ticketAmt = 15.00; break;
-                            default: System.out.println("Invalid choice. Please enter again!"); break;
-                        }
-                        break;
-                }
-            } while(choice < 1 || choice > 3);
-            
-            tic[i] = new Ticket(ticketType, ticketAmt);
-        }
+        for (int i = 0; i < tickets; i++) {
+    		String ticketType = "";
+    		int choice = 0;        // initialize to 0 so do-while starts correctly
+    		double ticketAmt = 0;
+
+    		do {
+        		switch (size) {
+            		case 1:
+                		System.out.print(Ticket.selectTicketType1() + (i + 1) + ": ");
+                		break;
+            		case 2:
+                		System.out.print(Ticket.selectTicketType2() + (i + 1) + ": ");
+               			break;
+            		case 3:
+                		System.out.print(Ticket.selectTicketType3() + (i + 1) + ": ");
+                		break;
+        		}
+
+        		//Validate input before reading - catches letters/symbols
+        		if (scan.hasNextInt()) {
+            		choice = scan.nextInt();
+            		scan.nextLine(); // clear buffer
+        		} else {
+            		System.out.println(Ticket.invalidType());
+            		scan.nextLine(); // discard bad input
+            		continue;        // restart loop without touching choice
+        		}
+
+        		switch (choice) {
+            		case 1: ticketType = "Adult";  ticketAmt = (size == 1) ? 15.00 : (size == 2) ? 20.00 : 25.00; break;
+            		case 2: ticketType = "Child";  ticketAmt = (size == 1) ? 10.00 : (size == 2) ? 12.00 : 15.00; break;
+            		case 3: ticketType = "Senior"; ticketAmt = (size == 1) ? 10.00 : (size == 2) ? 12.00 : 15.00; break;
+            		default: System.out.println(Ticket.invalidType()); break;
+        		}
+
+    		} while (choice < 1 || choice > 3);
+
+    		tic[i] = new Ticket(ticketType, ticketAmt);
+		}
         
         // Print Ticket Summary
         System.out.println(Ticket.ticketHeader2());
