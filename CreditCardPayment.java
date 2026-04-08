@@ -12,10 +12,10 @@ public CreditCardPayment(){
 	this(0, " ", " ", 0, 0, 0);
 	
 }
-
+//parameterized constructor
 public CreditCardPayment(int methodType, String cardHolder, String cardNumber, int cardCvc,
  							int expireMonth, int expireYear){
-	super(methodType);
+	super(methodType);//
 	this.cardHolder = cardHolder;
 	this.cardNumber = cardNumber;
 	this.cardCvc = cardCvc;
