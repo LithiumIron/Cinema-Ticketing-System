@@ -24,17 +24,17 @@ public class Movie {
     private String movieId;
     private String title;
     private String genre;
-    private int duration;
+    private String duration;
     private int ageRating;
     private String status;
 
     //no arg cons
     public Movie(){
-        this("","",0,0,"");
+        this("","","","", 0,"");
     }
 
     //full args cons used when loading movie data from file
-    public Movie(String movieId, String title, String genre, int duration, int ageRating, String status) {
+    public Movie(String movieId, String title, String genre, String duration, int ageRating, String status) {
         this.movieId = movieId;
         this.title = title;
         this.genre = genre;
@@ -45,7 +45,7 @@ public class Movie {
     
     //cons used when creating a new movie
     //movie id is automatically generated
-    public Movie(String title, String genre, int duration, int ageRating, String status) {
+    public Movie(String title, String genre, String duration, int ageRating, String status) {
         this.title = title;
         this.genre = genre;
         this.duration = duration;
@@ -58,14 +58,14 @@ public class Movie {
     public String getMovieId(){return movieId;}
     public String getTitle(){return title;}
     public String getGenre(){return genre;}
-    public int getDuration(){return duration;}
+    public String getDuration(){return duration;}
     public int getAgeRating(){return ageRating;}
     public String getStatus(){return status;}
 
     // ========= Setter ==========
     public void setTitle(String title){this.title = title;}
     public void setGenre(String genre){this.genre = genre;}
-    public void setDuration(int duration){this.duration = duration;}
+    public void setDuration(String duration){this.duration = duration;}
     public void setAgeRating(int ageRating){this.ageRating = ageRating;}
     public void setStatus(String status){this.status = status;}
 
@@ -132,7 +132,7 @@ public class Movie {
                     String[] parts = line.split("\\|");//split the line into parts using "|" as delimeter
                     if (parts.length == 6) {//ensure the line contains the correct number of fields
                         movieList.add(new Movie(parts[0], parts[1], parts[2],
-                                Integer.parseInt(parts[3]),
+                                parts[3],
                                 Integer.parseInt(parts[4]), parts[5]));
                     }
                 }
