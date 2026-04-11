@@ -205,7 +205,7 @@ public class Show {
     }
 
     public static void displaySelectShowHeader(String movieTitle) {
-        String safeMovieTitle = Utils.truncate(movieTitle, 45); // 放宽名字限制
+        String safeMovieTitle = Utils.truncate(movieTitle, 45); 
         String headerText = safeMovieTitle + " : Date/Time Selection";
         
         int totalSpaces = 83 - headerText.length();
