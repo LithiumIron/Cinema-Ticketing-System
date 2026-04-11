@@ -38,4 +38,20 @@ public class Utils {
         if (s.length() <= len) return s;
         return s.substring(0, len - 3) + "...";//truncate string and add"..." if it exceeds length
     }
+
+    public static void displayLine() {
+        System.out.println("-".repeat(85));
+    }
+
+    public static void displayInnerLine() {
+        System.out.println("|" + "-".repeat(83) + "|");
+    }
+
+    public static void displayEmptyRow() {
+        System.out.printf("| %-4s | %-30s | %-15s | %-23s |\n", 
+                          "-".repeat(4), 
+                          "-".repeat(30), 
+                          "-".repeat(15), 
+                          "-".repeat(23));
+    }
 }
