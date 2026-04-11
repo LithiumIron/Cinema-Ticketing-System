@@ -6,6 +6,7 @@ import java.time.format.DateTimeParseException;
 
 public class Show {
     //data attributes
+    private String showId;
     private Movie movie;
     private Cinema cinema;
     private Hall hall;
@@ -13,6 +14,7 @@ public class Show {
     private String startDate; // Format: "2026-07-01"
     private String endTime;
     private String endDate;
+    private static int showCounter = 1;
 
     //no-arg constructor
     public Show() {
@@ -21,16 +23,22 @@ public class Show {
 
     //constructor with arguments
     public Show(Movie movie, Cinema cinema, Hall hall, String startTime, String startDate) {
+        this.showId = generateShowId();
         this.movie = movie;
         this.cinema = cinema;
         this.hall = hall;
         this.startTime = startTime;
         this.startDate = startDate;
         this.endDate = calculateEndDate();
-        this.endTime = calculateEndTime(this.startTime);
+        this.endTime = calculateEndTime();
+        showCounter++;
     }
 
     //getters
+    public String getShowId() {
+        return showId;
+    }
+
     public Movie getMovie() {
         return movie;
     }
@@ -74,24 +82,28 @@ public class Show {
 
     public void setStartDate(String startDate) {
         this.startDate = startDate;
-        this.endTime = calculateEndTime(this.startTime);
+        this.endTime = calculateEndTime();
         this.endDate = calculateEndDate();
     }
 
     public void setStartTime(String startTime) {
         this.startTime = startTime;
-        this.endTime = calculateEndTime(this.startTime);  //set new start time will change the end time
+        this.endTime = calculateEndTime();  //set new start time will change the end time
         this.endDate = calculateEndDate();  //set new start time will change the end date if it is overnight screening
     }
 
     //other methods
     @Override
     public String toString() {
-        return "Movie: " + movie.getMovieTitle() + 
+        return "Movie: " + movie.getTitle() + 
         "\nCinema: " + cinema.getCinemaName() + 
-        "\nHall: " + hall.getHallName() + 
+        "\nHall: " + hall.getHallId() + 
         "\nShowtime: " + startTime + 
         "\nShowdate: " + startDate;
+    }
+
+    private String generateShowId() {
+        return String.format("S%05d", showCounter);
     }
 
     public LocalDate getStartDateAsLocalDate(String startDate) {
@@ -170,11 +182,11 @@ public class Show {
         return totalMinutes;
     }
 
-    private String calculateEndTime(String startTime) {
-        if (this.startTime == null || this.startTime.equals("") || this.movie == null) {
+    private String calculateEndTime() {
+        if (this.startTime == null || this.startTime.isEmpty() || this.movie == null) {
             return "";
         }
-        LocalTime start = getStartTimeAsLocalTime(startTime);
+        LocalTime start = getStartTimeAsLocalTime(this.startTime);
         int duration = getDurationInMinutes();
         LocalTime end = start.plusMinutes(duration);
         return end.format(DateTimeFormatter.ofPattern("HH:mm"));
@@ -186,9 +198,38 @@ public class Show {
             this.movie == null) {
             return "";
         }
-        LocalDateTime start = getStartDateTime();
+        LocalDateTime start = getStartDateTime(this.startDate, this.startTime);
         int duration = getDurationInMinutes();
         LocalDateTime end = start.plusMinutes(duration);
         return end.toLocalDate().format(DateTimeFormatter.ISO_LOCAL_DATE);
+    }
+
+    public static void displaySelectShowHeader(String movieTitle) {
+        String safeMovieTitle = Utils.truncate(movieTitle, 45); // 放宽名字限制
+        String headerText = safeMovieTitle + " : Date/Time Selection";
+        
+        int totalSpaces = 83 - headerText.length();
+        int padLeft = totalSpaces / 2;
+        int padRight = totalSpaces - padLeft;
+        
+        System.out.println("|" + " ".repeat(padLeft) + headerText + " ".repeat(padRight) + "|");
+    }
+
+    public static void displayShowInfoHeader() {
+        Utils.displayInnerLine();
+        System.out.printf("| %-6s | %-20s | %-15s | %-31s |\n", "ID", "Hall Name", "Show Date", "Showtime");
+        Utils.displayInnerLine();
+    }
+
+    public void displayShowDetails() {
+        String dHall = Utils.truncate(hall.getHallId(), 20);
+        String dDate = Utils.truncate(startDate, 15);
+        String dTime = Utils.truncate(startTime + " - " + endTime, 31);
+        System.out.printf("| %-6s | %-20s | %-15s | %-31s |\n", showId, dHall, dDate, dTime);
+    }
+
+    public static void displayEmptyShowRow() {
+        System.out.printf("| %-6s | %-20s | %-15s | %-31s |\n", 
+                          "-".repeat(6), "-".repeat(20), "-".repeat(15), "-".repeat(31));
     }
 }
