@@ -1,10 +1,15 @@
+import java.util.ArrayList;
+
 public class Cinema {
     //data attributes
+    private String cinemaId;
     private String cinemaName;
     private String state;
     private String city;
     private String postalCode;
-    private Hall[] halls;
+    private ArrayList<Hall> halls;
+    private static int cinemaCounter = 1;
+
 
     //no-arg constructor
     public Cinema() {
@@ -13,13 +18,21 @@ public class Cinema {
 
     //constructor with args
     public Cinema(String cinemaName, String state, String city, String postalCode) {
+        this.cinemaId = generateCinemaId();
         this.cinemaName = cinemaName;
         this.state = state;
         this.city = city;
         this.postalCode = postalCode;
+        this.halls = new ArrayList<>();
+        cinemaCounter++;
     }
 
     //getter
+
+    public String getCinemaId(){
+        return cinemaId;
+    }
+
     public String getCinemaName() {
         return cinemaName;
     }
@@ -36,7 +49,7 @@ public class Cinema {
         return postalCode;
     }
 
-    public Hall[] getHalls() {
+    public ArrayList<Hall> getHalls() {
         return halls;
     }
 
@@ -57,12 +70,11 @@ public class Cinema {
         this.postalCode = postalCode;
     }
 
-    public void setHalls(Hall[] halls) {
+    public void setHalls(ArrayList<Hall> halls) {
         this.halls = halls;
     }
 
     //other methods
-    @Override
     public String toString() {
         return "Cinema Name: " + cinemaName + 
         "\nState: " + state + 
@@ -70,10 +82,39 @@ public class Cinema {
         "\nPostal Code: " + postalCode;
     }
 
-    public Boolean IsPostalCodeFormatValid(){
-        if (postalCode == null || postalCode.trim().length() != 5) {
+    private String generateCinemaId() {
+        return String.format("C%03d", cinemaCounter);
+    }
+
+    public Boolean IsPostalCodeFormatValid(String postalCode){
+        if (postalCode.trim().length() != 5) {
             return false;
         }
         return postalCode.trim().matches("\\d{5}");
+    }
+
+    public void addHall(Hall newHall) {
+        this.halls.add(newHall);
+    }
+
+    public static void displaySelectCinemaHeader() {
+        System.out.println("|" + " ".repeat(33) + "Cinema Selection" + " ".repeat(34) + "|");
+    }
+
+    public static void displayCinemaInfoHeader() {
+        Utils.displayInnerLine();
+        System.out.printf("| %-4s | %-30s | %-15s | %-23s |\n", "ID", "Cinema Name", "State", "City");
+        Utils.displayInnerLine();
+    }
+
+    public void displayCinemaDetails() {
+        String dName = Utils.truncate(cinemaName, 30);
+        String dCity = Utils.truncate(city, 23);
+        System.out.printf("| %-4s | %-30s | %-15s | %-23s |\n", cinemaId, dName, state, dCity);
+    }
+
+    public static void displayEmptyRow() {
+        System.out.printf("| %-4s | %-30s | %-15s | %-23s |\n", 
+                          "-".repeat(4), "-".repeat(30), "-".repeat(15), "-".repeat(23));
     }
 }
