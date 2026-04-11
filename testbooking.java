@@ -90,9 +90,8 @@ public class testbooking {
         cinemaLoop(scanner, cinemas, movieList, showList);
     }
 
-        // =======================================================================
-    // 1. CINEMA LOOP: 负责选择电影院
-    // =======================================================================
+    
+    // 1. CINEMA LOOP
     public static void cinemaLoop(Scanner scanner, List<Cinema> cinemas, List<Movie> movieList, List<Show> showList) {
         String currentFilter = "None";
         String errorMessage = "";     
@@ -157,7 +156,7 @@ public class testbooking {
                 String input = scanner.nextLine().trim();
 
                 if (input.equalsIgnoreCase("X")) {
-                    return; // 结束程序
+                    return; 
                 } else if (input.isEmpty()) {
                     isSelectingId = true;
                     errorMessage = "";
@@ -184,14 +183,11 @@ public class testbooking {
                     }
 
                     if (found != null) {
-                        // 🌟 无缝跳转！不显示 success，直接重置状态并开启 Movie Loop
                         currentFilter = "None";
                         isSelectingId = false;
                         errorMessage = "";
                         
                         movieLoop(scanner, found, movieList, showList);
-                        
-                        // 当 movieLoop 结束(按X)后，会回到这里继续循环画 Cinema 页面
                     } else {
                         errorMessage = "Invalid cinema ID. Please enter a valid Cinema ID.";
                     }
@@ -200,9 +196,7 @@ public class testbooking {
         }
     }
 
-    // =======================================================================
-    // 2. MOVIE LOOP: 负责在选定的影院中选择电影
-    // =======================================================================
+    //2. MOVIE LOOP
     public static void movieLoop(Scanner scanner, Cinema selectedCinema, List<Movie> movieList, List<Show> showList) {
         String currentFilter = "None";
         String errorMessage = "";     
@@ -212,17 +206,12 @@ public class testbooking {
         LocalDateTime now = LocalDateTime.now();
 
         for (Show show : showList) {
-            // 条件 A：必须是这家电影院的 Show
             if (show.getCinema().getCinemaId().equals(selectedCinema.getCinemaId())) {
                 
-                // ✅ 你的新改法：直接调用 Show 里面的方法获取 LocalDateTime
-                // (假设你的获取日期和时间的 getter 叫 getDateString() 和 getTimeSlot())
                 LocalDateTime showDateTime = show.getStartDateTime(show.getStartDate(), show.getStartTime());
 
-                // 条件 B：Show 的时间必须大于或等于当前时间（没过期）
                 if (!showDateTime.isBefore(now)) { 
                     Movie m = show.getMovie();
-                    // 条件 C：去重
                     if (!availableMovies.contains(m)) {
                         availableMovies.add(m);
                     }
@@ -234,12 +223,11 @@ public class testbooking {
             System.out.print("\033[H\033[2J");
             System.out.flush();
 
-            // 🌟 新增逻辑 2：基于 availableMovies 进行过滤，而不是全局的 movieList
             List<Movie> filteredList = new ArrayList<>();
             if (currentFilter.equals("None")) {
-                filteredList.addAll(availableMovies); // <-- 换成了 availableMovies
+                filteredList.addAll(availableMovies); 
             } else {
-                for (Movie m : availableMovies) {     // <-- 换成了 availableMovies
+                for (Movie m : availableMovies) {     
                     if (m.getTitle().toLowerCase().contains(currentFilter.toLowerCase()) || 
                         m.getGenre().toLowerCase().contains(currentFilter.toLowerCase())) {
                         filteredList.add(m);
@@ -247,7 +235,6 @@ public class testbooking {
                 }
             }
 
-            // 2. 渲染电影表格
             Utils.displayLine();
 
             Movie.displaySelectMovieHeader(selectedCinema.getCinemaName());
@@ -262,7 +249,6 @@ public class testbooking {
             }
             Utils.displayLine();
 
-            // 3. 渲染交互区 (排版逻辑与 Cinema 一模一样，保持统一)
             String filterText = currentFilter.equals("None") ? "None" : "\"" + currentFilter + "\"";
             System.out.printf("| Filter applied : %-64s |\n", filterText); 
             System.out.printf("| %-81s |\n", "Enter keywords to filter movies (Movie Title, Genre)"); 
@@ -322,11 +308,8 @@ public class testbooking {
                         isSelectingId = false;
                         errorMessage = "";
                         
-                        // 🌟 解锁：跳往第三层！
                         showLoop(scanner, selectedCinema, found, showList);
                         
-                        // 注意：这里不用写 scanner.nextLine() 了，因为跳进 showLoop 之后，
-                        // 等它 return 出来，整个画面会自动重新刷回 Movie 选择页。
                     } else {
                         errorMessage = "Invalid movie ID. Please enter a valid Movie ID.";
                     }
@@ -335,15 +318,12 @@ public class testbooking {
         }
     }
 
-    // =======================================================================
-    // 3. SHOW LOOP: 负责在选定的电影院和电影中，选择播放场次
-    // =======================================================================
+    // 3. SHOW LOOP
     public static void showLoop(Scanner scanner, Cinema selectedCinema, Movie selectedMovie, List<Show> showList) {
         String currentFilter = "None";
         String errorMessage = "";     
         boolean isSelectingId = false;
 
-        // 🌟 1. 提取可用的场次 (同一家影院 + 同一部电影 + 未来时间)
         List<Show> availableShows = new ArrayList<>();
         LocalDateTime now = LocalDateTime.now();
 
@@ -362,7 +342,6 @@ public class testbooking {
             System.out.print("\033[H\033[2J");
             System.out.flush();
 
-            // 🌟 2. 过滤逻辑 (搜索日期或时间)
             List<Show> filteredList = new ArrayList<>();
             if (currentFilter.equals("None")) {
                 filteredList.addAll(availableShows);
@@ -375,10 +354,8 @@ public class testbooking {
                 }
             }
 
-            // 🌟 3. 渲染 Show 表格
             Utils.displayLine();
 
-            // 打印标题和表头
             Show.displaySelectShowHeader(selectedMovie.getTitle());
             Show.displayShowInfoHeader();
 
@@ -391,7 +368,6 @@ public class testbooking {
             }
             Utils.displayLine();
 
-            // 🌟 4. 渲染交互区
             String filterText = currentFilter.equals("None") ? "None" : "\"" + currentFilter + "\"";
             System.out.printf("| Filter applied : %-64s |\n", filterText); 
             System.out.printf("| %-81s |\n", "Enter keywords to filter shows (Date '2026-07-01' or Time '15:00')"); 
@@ -420,7 +396,7 @@ public class testbooking {
                 String input = scanner.nextLine().trim();
 
                 if (input.equalsIgnoreCase("X")) {
-                    return; // 退回上一页 (Movie Loop)
+                    return; 
                 } else if (input.isEmpty()) {
                     isSelectingId = true;
                     errorMessage = "";
@@ -455,7 +431,6 @@ public class testbooking {
                         System.out.print("| Moving to Seat Selection... Press Enter\033[K");
                         scanner.nextLine();
                         
-                        // TODO: 未来在这里调用 seatLoop(scanner, found);
                         
                     } else {
                         errorMessage = "Invalid show ID. Please enter a valid Show ID.";
