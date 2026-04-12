@@ -84,7 +84,26 @@ public class Report {
         System.out.println("  Total staff: " + staffList.size());
         printFooter();
     }
- 
+    // ================================================================
+    // REPORT - Booking Summary
+    // ================================================================
+    public void generateBookingSummaryReport(DataStorage storage) {
+       List<Booking> bookings = new ArrayList<>(storage.getAllBookings());
+       printHeader("BOOKING SUMMARY REPORT");
+
+       System.out.println("  Total Bookings : " + bookings.size());
+
+       // Count tickets across all bookings
+       int totalTickets = 0;
+       for (Booking b : bookings) {
+         if (b.getTickets() != null)
+            totalTickets += b.getTickets().length;
+       }
+       System.out.println("  Total Tickets  : " + totalTickets);
+       printFooter();
+   }
+    
+    
     // ================================================================
     // REPORT - Top Reward Points
     // ================================================================
