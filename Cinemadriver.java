@@ -298,9 +298,11 @@ public class Cinemadriver {
         System.out.println("  [2] Staff Summary");
         System.out.println("  [3] Top Reward Points");
         System.out.println("  [4] System Overview");
+        System.out.println("  [5] Booking Summary");
+        System.out.println("  [6] Peak Hours");
         System.out.println("  [0] Back");
  
-        int choice = readInt("  Select report: ", 0, 4);
+        int choice = readInt("  Select report: ", 0, 6);
         if (choice == 0) return;
  
         String reportID = "RPT" + String.format("%03d", reportCounter++);
@@ -311,6 +313,8 @@ public class Cinemadriver {
                 case 2: new Report(reportID, "STAFF_SUMMARY").generateStaffSummaryReport(storage);       break;
                 case 3: new Report(reportID, "TOP_REWARDS").generateTopRewardReport(storage);            break;
                 case 4: new Report(reportID, "SYSTEM_OVERVIEW").generateSystemOverviewReport(storage);   break;
+                case 5: new Report(reportID, "BOOKING_SUMMARY").generateBookingSummaryReport(storage);   break;
+                case 6: new Report(reportID, "PEAK_HOURS").generatePeakHourReport(storage);              break;
             }
         } catch (IllegalArgumentException e) {
             System.out.println("  Report error - " + e.getMessage());
