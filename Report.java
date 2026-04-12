@@ -1,4 +1,5 @@
 import java.util.*;
+import java.io.*;
 
 public class Report {
  
@@ -88,20 +89,129 @@ public class Report {
     // REPORT - Booking Summary
     // ================================================================
     public void generateBookingSummaryReport(DataStorage storage) {
-       List<Booking> bookings = new ArrayList<>(storage.getAllBookings());
-       printHeader("BOOKING SUMMARY REPORT");
+        printHeader("BOOKING SUMMARY REPORT");
 
-       System.out.println("  Total Bookings : " + bookings.size());
+        File file = new File("data/bookings.txt");
+        if (!file.exists()) {
+            System.out.println("  No booking records found.");
+            printFooter();
+            return;
+        }
 
-       // Count tickets across all bookings
-       int totalTickets = 0;
-       for (Booking b : bookings) {
-         if (b.getTickets() != null)
-            totalTickets += b.getTickets().length;
-       }
-       System.out.println("  Total Tickets  : " + totalTickets);
-       printFooter();
-   }
+        int totalBookings = 0;
+        int totalTickets  = 0;
+        double totalRevenue  = 0.0;
+        Map<String, Integer> movieCount = new LinkedHashMap<>();
+
+        try (BufferedReader br = new BufferedReader(new FileReader(file))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                line = line.trim();
+                if (line.isEmpty()) continue;
+
+                String[] parts = line.split("\\|", -1);
+                if (parts.length < 7) continue;
+
+                // parts: customerID|movieTitle|showDate|showTime|hallId|ticketCount|foodTotal
+                String movieTitle = parts[1].trim();
+                int    tickets    = 0;
+                double food       = 0.0;
+
+                try { tickets = Integer.parseInt(parts[5].trim()); }
+                catch (NumberFormatException ignored) {}
+                try { food = Double.parseDouble(parts[6].trim()); }
+                catch (NumberFormatException ignored) {}
+
+                totalBookings++;
+                totalTickets  += tickets;
+                totalRevenue  += food;
+                movieCount.put(movieTitle, movieCount.getOrDefault(movieTitle, 0) + 1);
+            }
+        } catch (IOException e) {
+            System.out.println("  Error reading booking file: " + e.getMessage());
+            printFooter();
+            return;
+        }
+
+        System.out.printf("  %-20s : %d%n",  "Total Bookings",  totalBookings);
+        System.out.printf("  %-20s : %d%n",  "Total Tickets",   totalTickets);
+        System.out.printf("  %-20s : RM%.2f%n", "Total Food Revenue", totalRevenue);
+        System.out.println();
+
+        // Most booked movies
+        List<Map.Entry<String, Integer>> sorted = new ArrayList<>(movieCount.entrySet());
+        sorted.sort((a, b) -> b.getValue() - a.getValue());
+
+        System.out.printf("  %-25s %s%n", "Movie", "Bookings");
+        System.out.println("  " + "-".repeat(35));
+        for (Map.Entry<String, Integer> e : sorted)
+            System.out.printf("  %-25s %d%n", e.getKey(), e.getValue());
+
+        printFooter();
+    }
+    // ================================================================
+    // REPORT - Peak Hour
+    // ================================================================
+    public void generatePeakHourReport(DataStorage storage) {
+        printHeader("PEAK HOUR REPORT");
+
+        File file = new File("data/bookings.txt");
+        if (!file.exists()) {
+            System.out.println("  No booking records found.");
+            printFooter();
+            return;
+        }
+
+        Map<String, Integer> hourCount = new LinkedHashMap<>();
+
+        try (BufferedReader br = new BufferedReader(new FileReader(file))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                line = line.trim();
+                if (line.isEmpty()) continue;
+                String[] parts = line.split("\\|", -1);
+                if (parts.length < 4) continue;
+
+                String showTime = parts[3].trim(); // format HH:mm
+                if (showTime.contains(":")) {
+                    String hour = showTime.split(":")[0] + ":00";
+                    hourCount.put(hour, hourCount.getOrDefault(hour, 0) + 1);
+                }
+            }
+        } catch (IOException e) {
+            System.out.println("  Error reading booking file: " + e.getMessage());
+            printFooter();
+            return;
+        }
+
+        if (hourCount.isEmpty()) {
+            System.out.println("  No showtime data available.");
+            printFooter();
+            return;
+        }
+
+        List<Map.Entry<String, Integer>> sorted = new ArrayList<>(hourCount.entrySet());
+        sorted.sort(Map.Entry.comparingByKey());
+ 
+        // Find peak
+        String peakHour  = sorted.get(0).getKey();
+        int peakCount = 0;
+        for (Map.Entry<String, Integer> e : sorted) {
+            if (e.getValue() > peakCount) {
+                peakCount = e.getValue();
+                peakHour  = e.getKey();
+            }
+        }
+
+        System.out.printf("  %-10s  %s%n", "Showtime", "Bookings");
+        System.out.println("  " + "-".repeat(30));
+        for (Map.Entry<String, Integer> e : sorted) {
+            String marker = e.getKey().equals(peakHour) ? "  <- PEAK" : "";
+            System.out.printf("  %-10s  %d%s%n", e.getKey(), e.getValue(), marker);
+        }
+
+        printFooter();
+    }
     
     
     // ================================================================
