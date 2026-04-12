@@ -11,9 +11,11 @@ import java.util.*;
 public class DataStorage {
  
     private static final String FILE_PATH = "data/users.txt";
- 
+    private static final String BOOKING_FILE = "data/bookings.txt";
+    
     private List<Customer> customers;
     private List<Staff>    staffList;
+    private List<Booking> bookings = new ArrayList<>();
  
     // ----------------------------------------------------------------
     // Constructor
@@ -73,6 +75,14 @@ public class DataStorage {
         saveAll();
         return true;
     }
+    
+    public boolean addBooking(String customerID, Booking booking) {
+      if (booking == null)
+        throw new IllegalArgumentException("Booking cannot be null.");
+      bookings.add(booking);
+      saveAllBookings(customerID, booking);
+      return true;
+}
  
     // ================================================================
     // READ
@@ -101,7 +111,7 @@ public class DataStorage {
             if (s.getUsername().equalsIgnoreCase(username)) return s;
         return null;
     }
- 
+    
     // Unified lookup across both lists (for login)
     public User findByUsername(String username) {
         User u = findCustomerByUsername(username);
@@ -124,7 +134,28 @@ public class DataStorage {
     public List<Staff> getAllStaff() {
         return Collections.unmodifiableList(staffList);
     }
- 
+    
+    // BOOKING - READ
+    public List<Booking> getAllBookings() {
+        return Collections.unmodifiableList(bookings);
+    }
+    // BOOKING - READ by customer (match by customerID prefix in file)
+    public List<Booking> getBookingsByCustomer(String customerID) {
+        List<Booking> result = new ArrayList<>();
+        File file = new File(BOOKING_FILE);
+        if (!file.exists()) return result;
+        try (BufferedReader br = new BufferedReader(new FileReader(file))) {
+          String line;
+          while ((line = br.readLine()) != null) {
+              String[] parts = line.split("\\|", -1);
+              if (parts.length >= 1 && parts[0].trim().equals(customerID))
+                  result.add(bookings.get(bookings.size() - 1)); // placeholder
+          }
+      } catch (IOException e) {
+        System.out.println("  [Storage] Error reading bookings: " + e.getMessage());
+      }
+      return result;
+    }
     // ================================================================
     // UPDATE
     // ================================================================
@@ -203,7 +234,28 @@ public class DataStorage {
             System.out.println("  [Storage] Error saving data: " + e.getMessage());
         }
     }
- 
+    private void saveAllBookings(String customerID, Booking booking) {
+      try (BufferedWriter bw = new BufferedWriter(
+              new FileWriter(BOOKING_FILE, true))) {  // true = append mode
+          // Format: customerID|showId|bookingDate|bookingTime|ticketCount
+          String showId    = booking.getShow() != null ? booking.getShow().getShowId() : "N/A";
+          String movieTitle= booking.getShow() != null ? booking.getShow().getMovie().getTitle() : "N/A";
+          String showDate  = booking.getShow() != null ? booking.getShow().getStartDate() : "N/A";
+          String showTime  = booking.getShow() != null ? booking.getShow().getStartTime() : "N/A";
+          int    ticketCnt = booking.getTickets() != null ? booking.getTickets().length : 0;
+
+          bw.write(customerID  + "|" +
+                   showId      + "|" +
+                   movieTitle  + "|" +
+                   showDate    + "|" +
+                  showTime    + "|" +
+                  ticketCnt);
+          bw.newLine();
+      } catch (IOException e) {
+          System.out.println("  [Storage] Error saving booking: " + e.getMessage());
+      }
+   }
+
     // ================================================================
     // FILE I/O - LOAD (read TXT on startup)
     // ================================================================
@@ -255,8 +307,23 @@ public class DataStorage {
         } catch (IOException e) {
             System.out.println("  [Storage] Error loading data: " + e.getMessage());
         }
+        loadAllBookings();
     }
- 
+    
+    private void loadAllBookings() {
+       File file = new File(BOOKING_FILE);
+       if (!file.exists() || file.length() == 0) return;
+       try (BufferedReader br = new BufferedReader(new FileReader(file))) {
+          String line;
+          while ((line = br.readLine()) != null) {
+             line = line.trim();
+             if (!line.isEmpty())
+                 bookings.add(new Booking()); // skeleton - full object lives in teammate's session
+          }
+       } catch (IOException e) {
+        System.out.println("  [Storage] Error loading bookings: " + e.getMessage());
+       }
+    }
     // ================================================================
     // DISPLAY HELPERS
     // ================================================================
