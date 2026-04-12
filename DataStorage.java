@@ -1,13 +1,6 @@
 import java.io.*;
 import java.util.*;
  
-/*
- DataStorage - persistent TXT-based storage for Customers and Staff.
- File: data/users.txt
- Format per line: ROLE|userID|username|password|extraField
- CUSTOMER|C001|alice|pass123|10        (extraField = rewardPoints)
- STAFF|S001|sarah|staff123|Sarah Lim   (extraField = staffName
- */
 public class DataStorage {
  
     private static final String FILE_PATH = "data/users.txt";
@@ -76,13 +69,12 @@ public class DataStorage {
         return true;
     }
     
-    public boolean addBooking(String customerID, Booking booking) {
+    public void addBooking(String customerID, Booking booking) {
       if (booking == null)
         throw new IllegalArgumentException("Booking cannot be null.");
       bookings.add(booking);
-      saveAllBookings(customerID, booking);
-      return true;
-}
+      saveBookingToFile(customerID, booking);
+    }
  
     // ================================================================
     // READ
@@ -234,27 +226,44 @@ public class DataStorage {
             System.out.println("  [Storage] Error saving data: " + e.getMessage());
         }
     }
-    private void saveAllBookings(String customerID, Booking booking) {
-      try (BufferedWriter bw = new BufferedWriter(
-              new FileWriter(BOOKING_FILE, true))) {  // true = append mode
-          // Format: customerID|showId|bookingDate|bookingTime|ticketCount
-          String showId    = booking.getShow() != null ? booking.getShow().getShowId() : "N/A";
-          String movieTitle= booking.getShow() != null ? booking.getShow().getMovie().getTitle() : "N/A";
-          String showDate  = booking.getShow() != null ? booking.getShow().getStartDate() : "N/A";
-          String showTime  = booking.getShow() != null ? booking.getShow().getStartTime() : "N/A";
-          int    ticketCnt = booking.getTickets() != null ? booking.getTickets().length : 0;
+    
+    // BOOKING - SAVE one booking (append to file)
+    private void saveBookingToFile(String customerID, Booking booking) {
+        try (BufferedWriter bw = new BufferedWriter(
+                new FileWriter(BOOKING_FILE, true))) {
 
-          bw.write(customerID  + "|" +
-                   showId      + "|" +
-                   movieTitle  + "|" +
-                   showDate    + "|" +
-                  showTime    + "|" +
-                  ticketCnt);
-          bw.newLine();
-      } catch (IOException e) {
-          System.out.println("  [Storage] Error saving booking: " + e.getMessage());
-      }
-   }
+            String movieTitle = "N/A";
+            String showDate   = "N/A";
+            String showTime   = "N/A";
+            String hallId     = "N/A";
+            int    ticketCnt  = 0;
+            double totalFood  = 0.0;
+
+            if (booking.getShow() != null) {
+                Show s = booking.getShow();
+                if (s.getMovie()  != null) movieTitle = s.getMovie().getTitle();
+                if (s.getStartDate() != null) showDate = s.getStartDate();
+                if (s.getStartTime() != null) showTime = s.getStartTime();
+                if (s.getHall()   != null) hallId = s.getHall().getHallId();
+            }
+            if (booking.getTickets()   != null) ticketCnt = booking.getTickets().length;
+            if (booking.getFoodOrder() != null) totalFood = booking.getFoodOrder().getTotalPrice();
+
+            // Format: customerID|movieTitle|showDate|showTime|hallId|ticketCount|foodTotal
+            bw.write(customerID + "|" +
+                     movieTitle + "|" +
+                     showDate   + "|" +
+                     showTime   + "|" +
+                     hallId     + "|" +
+                     ticketCnt  + "|" +
+                     String.format("%.2f", totalFood));
+            bw.newLine();
+
+        } catch (IOException e) {
+            System.out.println("  [Storage] Error saving booking: " + e.getMessage());
+        }
+    }
+
 
     // ================================================================
     // FILE I/O - LOAD (read TXT on startup)
@@ -318,8 +327,9 @@ public class DataStorage {
           while ((line = br.readLine()) != null) {
              line = line.trim();
              if (!line.isEmpty())
-                 bookings.add(new Booking()); // skeleton - full object lives in teammate's session
+                 bookings.add(new Booking()); 
           }
+          System.out.println("  [Storage] Loaded " + bookings.size() + " booking record(s).");
        } catch (IOException e) {
         System.out.println("  [Storage] Error loading bookings: " + e.getMessage());
        }
