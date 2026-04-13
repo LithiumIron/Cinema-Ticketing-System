@@ -90,11 +90,6 @@ public abstract class Reward {
         return rewardQty >= 0;
     }
 
-    public static boolean isRewardStatusValid(String rewardStatus){
-        return rewardStatus.equalsIgnoreCase("Listed") || rewardStatus.equalsIgnoreCase("Delisted") 
-            || rewardStatus.equalsIgnoreCase("Out of Stock");
-    }
-
     public void updateOutOfStockStatus(){
         if (this.rewardQty == 0) 
             setRewardStatus("Out of Stock");
