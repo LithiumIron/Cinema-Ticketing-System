@@ -30,17 +30,17 @@ public class CustomerMenu {
                 case 1:
                     hallType = "Small";
                     hall = new Hall(hallType);
-                    hallMenu(hall);
+                    seatMenu(hall);
                     break;
                 case 2:
                     hallType = "Medium";
                     hall = new Hall(hallType);
-                    hallMenu(hall);
+                    seatMenu(hall);
                     break;
                 case 3:
                     hallType = "Large";
                     hall = new Hall(hallType);
-                    hallMenu(hall);
+                    seatMenu(hall);
                     break;
                 case 4:
                     break;
@@ -59,7 +59,7 @@ public class CustomerMenu {
         }
     }
     
-    private static void hallMenu(Hall hall) {
+    private static void seatMenu(Hall hall) {
         while (true) {
             Utils.clearScreen(80);
             System.out.println("\n=================================");
