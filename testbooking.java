@@ -98,7 +98,7 @@ public class testbooking {
         boolean isSelectingId = false;
 
         while (true) {
-            System.out.print("\033[H\033[2J");
+            Utils.clearScreen(50);
             System.out.flush();
 
             List<Cinema> filteredList = new ArrayList<>();
@@ -135,7 +135,7 @@ public class testbooking {
 
             if (!isSelectingId) {
                 if (!errorMessage.isEmpty()) {
-                    System.out.printf("| \033[31mError: %-74s\033[0m |\n", errorMessage);
+                    System.out.printf("| Error: %-74s\n", errorMessage);
                 } else {
                     System.out.printf("| %-81s |\n", ""); 
                 }
@@ -143,7 +143,7 @@ public class testbooking {
             } else {
                 System.out.printf("| %-81s |\n", "Enter cinema ID to choose cinema (X to refilter the cinemas) :");
                 if (!errorMessage.isEmpty()) {
-                    System.out.printf("| \033[31mError: %-74s\033[0m |\n", errorMessage);
+                    System.out.printf("| Error: %-74s\n", errorMessage);
                 } else {
                     System.out.printf("| %-81s |\n", ""); 
                 }
@@ -152,7 +152,7 @@ public class testbooking {
 
             // Input Handling
             if (!isSelectingId) {
-                System.out.print("\033[4A\r| (use \"quotes\" for keywords, X to exit, Enter to skip) : ");
+                System.out.print("(use \"quotes\" for keywords, X to exit, Enter to skip) : ");
                 String input = scanner.nextLine().trim();
 
                 if (input.equalsIgnoreCase("X")) {
@@ -167,7 +167,7 @@ public class testbooking {
                     errorMessage = "Please use \"quotes\" for keywords!";
                 }
             } else {
-                System.out.print("\033[3A\r| Enter cinema ID to choose cinema (X to refilter the cinemas) : ");
+                System.out.print("Enter cinema ID to choose cinema (X to refilter the cinemas) : ");
                 String idInput = scanner.nextLine().trim();
 
                 if (idInput.equalsIgnoreCase("X")) {
@@ -220,7 +220,7 @@ public class testbooking {
         }
 
         while (true) {
-            System.out.print("\033[H\033[2J");
+            Utils.clearScreen(50);
             System.out.flush();
 
             List<Movie> filteredList = new ArrayList<>();
@@ -251,12 +251,12 @@ public class testbooking {
 
             String filterText = currentFilter.equals("None") ? "None" : "\"" + currentFilter + "\"";
             System.out.printf("| Filter applied : %-64s |\n", filterText); 
-            System.out.printf("| %-81s |\n", "Enter keywords to filter movies (Movie Title, Genre)"); 
-            System.out.printf("| %-81s |\n", "(use \"quotes\" for keywords, X to BACK to cinema, Enter to skip) :"); 
+            System.out.printf("| Enter keywords to filter movies (Movie Title, Genre)"); 
+            System.out.printf("| (use \"quotes\" for keywords, X to BACK to cinema, Enter to skip) :"); 
 
             if (!isSelectingId) {
                 if (!errorMessage.isEmpty()) {
-                    System.out.printf("| \033[31mError: %-74s\033[0m |\n", errorMessage);
+                    System.out.printf("| Error: %-74s\n", errorMessage);
                 } else {
                     System.out.printf("| %-81s |\n", ""); 
                 }
@@ -264,7 +264,7 @@ public class testbooking {
             } else {
                 System.out.printf("| %-81s |\n", "Enter movie ID to choose movie (X to refilter the movies) :");
                 if (!errorMessage.isEmpty()) {
-                    System.out.printf("| \033[31mError: %-74s\033[0m |\n", errorMessage);
+                    System.out.printf("| Error: %-74s\n", errorMessage);
                 } else {
                     System.out.printf("| %-81s |\n", ""); 
                 }
@@ -273,7 +273,7 @@ public class testbooking {
 
             // 4. Input Handling
             if (!isSelectingId) {
-                System.out.print("\033[4A\r| (use \"quotes\" for keywords, X to BACK to cinema, Enter to skip) : ");
+                System.out.print("| (use \"quotes\" for keywords, X to BACK to cinema, Enter to skip) : ");
                 String input = scanner.nextLine().trim();
 
                 if (input.equalsIgnoreCase("X")) {
@@ -288,7 +288,7 @@ public class testbooking {
                     errorMessage = "Please use \"quotes\" for keywords!";
                 }
             } else {
-                System.out.print("\033[3A\r| Enter movie ID to choose movie (X to refilter the movies) : ");
+                System.out.print(" Enter movie ID to choose movie (X to refilter the movies) : ");
                 String idInput = scanner.nextLine().trim();
 
                 if (idInput.equalsIgnoreCase("X")) {
@@ -339,7 +339,7 @@ public class testbooking {
         }
 
         while (true) {
-            System.out.print("\033[H\033[2J");
+            Utils.clearScreen(50);
             System.out.flush();
 
             List<Show> filteredList = new ArrayList<>();
@@ -370,12 +370,12 @@ public class testbooking {
 
             String filterText = currentFilter.equals("None") ? "None" : "\"" + currentFilter + "\"";
             System.out.printf("| Filter applied : %-64s |\n", filterText); 
-            System.out.printf("| %-81s |\n", "Enter keywords to filter shows (Date '2026-07-01' or Time '15:00')"); 
-            System.out.printf("| %-81s |\n", "(use \"quotes\" for keywords, X to BACK to movies, Enter to skip) :"); 
+            System.out.printf("| Enter keywords to filter shows (Date '2026-07-01' or Time '15:00')"); 
+            System.out.printf("| (use \"quotes\" for keywords, X to BACK to movies, Enter to skip) :"); 
 
             if (!isSelectingId) {
                 if (!errorMessage.isEmpty()) {
-                    System.out.printf("| \033[31mError: %-74s\033[0m |\n", errorMessage);
+                    System.out.printf("| Error: %-74s|\n", errorMessage);
                 } else {
                     System.out.printf("| %-81s |\n", ""); 
                 }
@@ -383,14 +383,14 @@ public class testbooking {
             } else {
                 System.out.printf("| %-81s |\n", "Enter show ID to choose time (X to refilter the shows) :");
                 if (!errorMessage.isEmpty()) {
-                    System.out.printf("| \033[31mError: %-64s\033[0m |\n", errorMessage);
+                    System.out.printf("| Error: %-64s |\n", errorMessage);
                 } else {
                     System.out.printf("| %-81s |\n", ""); 
                 }
             }
             Utils.displayLine();
 
-            // 🌟 5. Input Handling
+            // ðŸŒŸ 5. Input Handling
             if (!isSelectingId) {
                 System.out.print("\033[4A\r| (use \"quotes\" for keywords, X to BACK to movies, Enter to skip) : ");
                 String input = scanner.nextLine().trim();
@@ -407,7 +407,7 @@ public class testbooking {
                     errorMessage = "Please use \"quotes\" for keywords!";
                 }
             } else {
-                System.out.print("\033[3A\r| Enter show ID to choose time (X to refilter the shows) : ");
+                System.out.print("Enter show ID to choose time (X to refilter the shows) : ");
                 String idInput = scanner.nextLine().trim();
 
                 if (idInput.equalsIgnoreCase("X")) {
@@ -426,9 +426,7 @@ public class testbooking {
                         currentFilter = "None";
                         isSelectingId = false;
                         errorMessage = "";
-                        
-                        System.out.print("\033[3A\r| \033[32mSuccessfully selected Time: " + found.getStartTime() + " on " + found.getStartDate() + "\033[K\n");
-                        System.out.print("| Moving to Seat Selection... Press Enter\033[K");
+      
                         scanner.nextLine();
                         
                         
