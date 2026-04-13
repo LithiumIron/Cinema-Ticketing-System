@@ -8,7 +8,7 @@ public class DataStorage {
     
     private List<Customer> customers;
     private List<Staff>    staffList;
-    private List<Booking> bookings = new ArrayList<>();
+    private List<Booking>  bookings ;
  
     // ----------------------------------------------------------------
     // Constructor
@@ -16,6 +16,7 @@ public class DataStorage {
     public DataStorage() {
         this.customers = new ArrayList<>();
         this.staffList = new ArrayList<>();
+        this.bookings  = new ArrayList<>();
         ensureFileExists();
     }
  
