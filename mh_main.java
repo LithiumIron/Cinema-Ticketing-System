@@ -1203,7 +1203,7 @@ public static void deleteReward() {
     System.out.print("Are you sure you want to delete this reward? (y/n): ");
     String confirm = scan.nextLine().trim();
     if (confirm.equalsIgnoreCase("y")) {
-        rewardList.remove(rewardToDelete);
+        rewardToDelete.setRewardStatus("Delisted");
         System.out.println("Reward deleted successfully.");
     } else {
         System.out.println("Deletion cancelled.");
