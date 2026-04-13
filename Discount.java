@@ -5,19 +5,22 @@ public class Discount extends Reward{
 
     //no-arg constructor
     public Discount(){
-        this("", 0, 0, "", 0);
+        this("", 0, 0, 0.0);
     }
 
     //constructor with args
-    public Discount(String rewardDesc, int redeemPts, int rewardQty, String useCond, int percentage){
-        super(generateNewCode(), rewardDesc, "Freebie", redeemPts, rewardQty, useCond);
+    public Discount(String rewardDesc, int redeemPts, int rewardQty, double percentage){
+        super(generateNewCode(), rewardDesc, "Discount", redeemPts, rewardQty);
         this.percentage = percentage;
     }
-
 
     //getter
     public double getPercentage(){
         return percentage;
+    }
+
+    public static int getSequence(){
+        return sequence;
     }
 
     //setter
