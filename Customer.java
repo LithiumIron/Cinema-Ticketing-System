@@ -1,30 +1,36 @@
+import java.util.List;
+import java.util.ArrayList;
+
  class Customer extends User {
  
     private String customerID;
-    private int    rewardPoint;
+    private int    rewardPts;
+    private final List<Redemption> redemptions;
  
     // ----------------------------------------------------------------
     // Constructor
     // ----------------------------------------------------------------
-    public Customer(String customerID, String username, String password) {
+    public Customer(String customerID, String username, String password, List<Redemption> redemptions) {
         super(customerID, username, password, "CUSTOMER");
         this.customerID  = customerID;
-        this.rewardPoint = 0;
+        this.rewardPts = 0;
+        this.redemptions = new ArrayList<>();
     }
  
     // ----------------------------------------------------------------
     // Getters
     // ----------------------------------------------------------------
     public String getCustomerID()  { return customerID; }
-    public int    getRewardPoint() { return rewardPoint; }
+    public int    getRewardPts() { return rewardPts; }
+    public List<Redemption> getRedemptions() { return redemptions; }
  
     // ----------------------------------------------------------------
     // Setters
     // ----------------------------------------------------------------
-    public void setRewardPoint(int pts) {
-        if (pts < 0)
+    public void setRewardPts(int RewardPts) {
+        if (RewardPts < 0)
             throw new IllegalArgumentException("Reward points cannot be negative.");
-        this.rewardPoint = pts;
+        this.rewardPts = RewardPts;
     }
  
     // ----------------------------------------------------------------
@@ -41,7 +47,7 @@
     }
  
     public String getDisplayName() {
-        return "Customer: " + getUsername() + " | Points: " + rewardPoint;
+        return "Customer: " + getUsername() + " | Points: " + rewardPts;
     }
  
     // ----------------------------------------------------------------
@@ -49,9 +55,35 @@
     // ----------------------------------------------------------------
     public String toString() {
         return String.format("Customer[ID=%-6s | Username=%-15s | RewardPoints=%d]",
-                customerID, getUsername(), rewardPoint);
+                customerID, getUsername(), rewardPts);
     }
- 
+
+    /**
+     * Check if this customer has a redemption for the given reward code
+     * whose status is "Unused".
+     */
+    public boolean selectReward(String rewardCode) {
+        if (rewardCode == null) {
+            return false;
+        }
+
+        for (Redemption redemption : redemptions) {
+            Reward reward = redemption.getReward();
+            if (reward == null) {
+                continue;
+            }
+
+            boolean sameCode = rewardCode.equalsIgnoreCase(reward.getRewardID());
+            boolean unused = "Unused".equalsIgnoreCase(redemption.getRedeemRewardStatus());
+
+            if (sameCode && unused) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     public boolean equals(Object obj) {
         if (this == obj) return true;
         if (!(obj instanceof Customer)) return false;
