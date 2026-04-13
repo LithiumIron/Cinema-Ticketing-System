@@ -129,50 +129,51 @@ public class testbooking {
 
             // Interaction Area
             String filterText = currentFilter.equals("None") ? "None" : "\"" + currentFilter + "\"";
-            System.out.printf("| Filter applied : %-64s |\n", filterText); 
-            System.out.printf("| %-81s |\n", "Enter keywords to filter cinemas (Cinema Name, State, City)"); 
-            System.out.printf("| %-81s |\n", "(use \"quotes\" for keywords, X to exit, Enter to skip) :"); 
+            System.out.printf("  Filter applied : %-64s  \n", filterText); 
+            System.out.printf("  %-81s  \n", "Enter keywords to filter cinemas (Cinema Name, State, City)"); 
+            System.out.printf("  %-81s  \n", "(use \"quotes\" for keywords, X to exit, Enter to skip) :"); 
 
             if (!isSelectingId) {
+                // If there's a filter error, it shows here (under the prompt)
                 if (!errorMessage.isEmpty()) {
-                    System.out.printf("| Error: %-74s\n", errorMessage);
+                    System.out.printf("| Error: %-73s |\n", errorMessage);
                 } else {
                     System.out.printf("| %-81s |\n", ""); 
                 }
-                System.out.printf("| %-81s |\n", ""); 
+                System.out.printf("| %-81s |\n", ""); // Empty row for spacing
             } else {
-                System.out.printf("| %-81s |\n", "Enter cinema ID to choose cinema (X to refilter the cinemas) :");
+                // ID Selection Mode
                 if (!errorMessage.isEmpty()) {
-                    System.out.printf("| Error: %-74s\n", errorMessage);
+                    System.out.printf("| Error: %-73s |\n", errorMessage);
                 } else {
                     System.out.printf("| %-81s |\n", ""); 
                 }
+                System.out.printf("| %-81s |\n", "Enter cinema ID to choose cinema (X to refilter the cinemas) :");
             }
-            Utils.displayLine();
 
             // Input Handling
             if (!isSelectingId) {
-                System.out.print("(use \"quotes\" for keywords, X to exit, Enter to skip) : ");
+                System.out.print("Selection: ");
                 String input = scanner.nextLine().trim();
 
                 if (input.equalsIgnoreCase("X")) {
-                    return; 
+                    return; // Exit the loop/program
                 } else if (input.isEmpty()) {
                     isSelectingId = true;
-                    errorMessage = "";
+                    errorMessage = ""; // Clear errors when switching modes
                 } else if (input.startsWith("\"") && input.endsWith("\"") && input.length() > 2) {
                     currentFilter = input.substring(1, input.length() - 1);
-                    errorMessage = "";
+                    errorMessage = ""; 
                 } else {
                     errorMessage = "Please use \"quotes\" for keywords!";
                 }
             } else {
-                System.out.print("Enter cinema ID to choose cinema (X to refilter the cinemas) : ");
+                System.out.print("Enter Cinema ID: ");
                 String idInput = scanner.nextLine().trim();
 
                 if (idInput.equalsIgnoreCase("X")) {
                     isSelectingId = false;
-                    errorMessage = "";
+                    errorMessage = ""; // Clear errors when going back
                 } else {
                     Cinema found = null;
                     for (Cinema c : filteredList) {
@@ -183,13 +184,13 @@ public class testbooking {
                     }
 
                     if (found != null) {
-                        currentFilter = "None";
-                        isSelectingId = false;
                         errorMessage = "";
-                        
+                        // Reset filter for the next time we come back to this menu
+                        currentFilter = "None"; 
+                        isSelectingId = false;
                         movieLoop(scanner, found, movieList, showList);
                     } else {
-                        errorMessage = "Invalid cinema ID. Please enter a valid Cinema ID.";
+                        errorMessage = "Invalid ID. Please enter a valid Cinema ID from the list.";
                     }
                 }
             }
@@ -264,7 +265,7 @@ public class testbooking {
             } else {
                 System.out.printf("| %-81s |\n", "Enter movie ID to choose movie (X to refilter the movies) :");
                 if (!errorMessage.isEmpty()) {
-                    System.out.printf("| Error: %-74s\n", errorMessage);
+                    System.out.printf("| Error: %-74s|\n", errorMessage);
                 } else {
                     System.out.printf("| %-81s |\n", ""); 
                 }
@@ -438,3 +439,130 @@ public class testbooking {
         }
     }
 }
+//// 1. CINEMA LOOP
+    public static void cinemaLoop(Scanner scanner, List<Cinema> cinemas, List<Movie> movieList, List<Show> showList) {
+        String currentFilter = "None";
+        String errorMessage = "";     
+        boolean isSelectingId = false;
+
+        while (true) {
+            Utils.clearScreen(50);
+            System.out.flush();
+
+            List<Cinema> filteredList = new ArrayList<>();
+            if (currentFilter.equals("None")) {
+                filteredList.addAll(cinemas);
+            } else {
+                for (Cinema c : cinemas) {
+                    if (c.getCinemaName().toLowerCase().contains(currentFilter.toLowerCase()) || 
+                        c.getState().toLowerCase().contains(currentFilter.toLowerCase()) || 
+                        c.getCity().toLowerCase().contains(currentFilter.toLowerCase())) {
+                        filteredList.add(c);
+                    }
+                }
+            }
+
+            Utils.displayLine();
+            Cinema.displaySelectCinemaHeader();
+            Cinema.displayCinemaInfoHeader();
+
+            for (int i = 0; i < 10; i++) {
+                if (i < filteredList.size()) {
+                    filteredList.get(i).displayCinemaDetails();
+                } else {
+                    Utils.displayEmptyRow();
+                }
+            }
+            Utils.displayLine();
+
+            // Interaction Area
+            String filterText = currentFilter.equals("None") ? "None" : "\"" + currentFilter + "\"";
+            System.out.printf("  Filter applied : %-64s  \n", filterText); 
+            System.out.printf("  %-81s  \n", "Enter keywords to filter cinemas (Cinema Name, State, City)"); 
+            System.out.printf("  %-81s  \n", "(use \"quotes\" for keywords, X to exit, Enter to skip) :"); 
+
+            if (!isSelectingId) {
+                // If there's a filter error, it shows here (under the prompt)
+                if (!errorMessage.isEmpty()) {
+                    System.out.printf("| Error: %-73s |\n", errorMessage);
+                } else {
+                    System.out.printf("| %-81s |\n", ""); 
+                }
+                System.out.printf("| %-81s |\n", ""); // Empty row for spacing
+            } else {
+                // ID Selection Mode
+                if (!errorMessage.isEmpty()) {
+                    System.out.printf("| Error: %-73s |\n", errorMessage);
+                } else {
+                    System.out.printf("| %-81s |\n", ""); 
+                }
+                System.out.printf("| %-81s |\n", "Enter cinema ID to choose cinema (X to refilter the cinemas) :");
+            }
+
+            // Input Handling
+            if (!isSelectingId) {
+                System.out.print("Selection: ");
+                String input = scanner.nextLine().trim();
+
+                if (input.equalsIgnoreCase("X")) {
+                    return; // Exit the loop/program
+                } else if (input.isEmpty()) {
+                    isSelectingId = true;
+                    errorMessage = ""; // Clear errors when switching modes
+                } else if (input.startsWith("\"") && input.endsWith("\"") && input.length() > 2) {
+                    currentFilter = input.substring(1, input.length() - 1);
+                    errorMessage = ""; 
+                } else {
+                    errorMessage = "Please use \"quotes\" for keywords!";
+                }
+            } else {
+                System.out.print("Enter Cinema ID: ");
+                String idInput = scanner.nextLine().trim();
+
+                if (idInput.equalsIgnoreCase("X")) {
+                    isSelectingId = false;
+                    errorMessage = ""; // Clear errors when going back
+                } else {
+                    Cinema found = null;
+                    for (Cinema c : filteredList) {
+                        if (c.getCinemaId().equalsIgnoreCase(idInput)) {
+                            found = c;
+                            break;
+                        }
+                    }
+
+                    if (found != null) {
+                        errorMessage = "";
+                        // Reset filter for the next time we come back to this menu
+                        currentFilter = "None"; 
+                        isSelectingId = false;
+                        movieLoop(scanner, found, movieList, showList);
+                    } else {
+                        errorMessage = "Invalid ID. Please enter a valid Cinema ID from the list.";
+                    }
+                }
+            }
+        }
+    }
+/*remove the "|" for the Filter applied ..... row,  for the "Enter keywords to filte .....row, and the use quote for the keyword.... row
+I don wan the "selection :"
+I tell u the flow 
+first display the Upper box with 10 row record (include the displayLine)
+(between them nothing)
+then display the Filter applied row 
+then display the Enter keywords to filter ....... row
+then display use quotes for keywords ....... row (here user need to enter input)
+if user enter X directly exit
+if user enter empty or keyword without quote 
+display the specific error message and display the TWO ROW AGAIN ( display the Enter keywords to filter ....... row
+then display use quotes for keywords ....... row (here user need to enter input))
+if user enter valid keyword just 
+display the three row again 
+( display the Filter applied row 
+then display the Enter keywords to filter ....... row
+then display use quotes for keywords ....... row (here user need to enter input))
+if user Press enter then display the Enter cinema id ......row
+if user enter invalid id display the error message and the next row display
+Enter the cinema id ..... row again
+if user enter valid cinema id just get into the movie loop
+if user enter X just redisplay the filter applied and the following row part*/
