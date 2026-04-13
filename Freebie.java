@@ -8,12 +8,12 @@ public class Freebie extends Reward{
 
     //no-arg constructor
     public Freebie() {
-        this("", 0, 0, "", new HashMap<>());
+        this("", 0, 0, new HashMap<>());
     }
 
     //constructor with args
-    public Freebie(String rewardDesc, int redeemPts, int rewardQty, String useCond, Map<String, Integer> freebieItems) {
-        super(generateNewCode(), rewardDesc, "Freebie", redeemPts, rewardQty, useCond);
+    public Freebie(String rewardDesc, int redeemPts, int rewardQty, Map<String, Integer> freebieItems) {
+        super(generateNewCode(), rewardDesc, "Freebie", redeemPts, rewardQty);
         this.freebieItems = freebieItems;
     }
 
@@ -32,7 +32,6 @@ public class Freebie extends Reward{
     }
 
     //other methods
-    @Override
     public String toString(){
         return super.toString() + 
             "\nFreebie Items : " + freebieItems;
@@ -92,6 +91,6 @@ public class Freebie extends Reward{
 
     private static String generateNewCode() {
         sequence++;
-        return String.format("F%05d", sequence);
+        return String.format("F%03d", sequence);
     }
 }
