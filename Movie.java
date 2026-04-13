@@ -361,4 +361,32 @@ public class Movie {
         return VALID_STATUSES[c - 1];
     }
 
+    public static void displaySelectMovieHeader(String cinemaName) {
+        String safeCinemaName = Utils.truncate(cinemaName, 45);
+        String headerText = safeCinemaName + " : Movie Selection";
+        int totalSpaces = 83 - headerText.length();
+        int padLeft = totalSpaces / 2;
+        int padRight = totalSpaces - padLeft; 
+        
+        System.out.println("|" + " ".repeat(padLeft) + headerText + " ".repeat(padRight) + "|");
+    }
+
+    public static void displayMovieInfoHeader() {
+        Utils.displayInnerLine();
+        System.out.printf("| %-4s | %-28s | %-19s | %-8s | %-10s |\n", "ID", "Title", "Genre", "Duration", "Age Rating");
+        Utils.displayInnerLine();
+    }
+
+    public void displayMovieDetails() {
+        String dTitle = Utils.truncate(title, 28);
+        String dGenre = Utils.truncate(genre, 19);
+        String dDuration = Utils.truncate(duration, 8); 
+        System.out.printf("| %-4s | %-28s | %-19s | %-8s | %-10d |\n", movieId, dTitle, dGenre, dDuration, ageRating);
+    }
+
+    public static void displayEmptyMovieRow() {
+        System.out.printf("| %-4s | %-28s | %-19s | %-8s | %-10s |\n", 
+                          "-".repeat(4), "-".repeat(28), "-".repeat(19), "-".repeat(8), "-".repeat(10));
+    }
+
 }
