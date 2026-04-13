@@ -1,5 +1,5 @@
 public abstract class Reward {
-    private String rewardCode;
+    private String rewardID;
     private String rewardDesc;
     private String rewardType;
     private int redeemPts;
@@ -12,8 +12,8 @@ public abstract class Reward {
     }
 
     // constructor with args
-    protected Reward(String rewardCode, String rewardDesc, String rewardType, int redeemPts, int rewardQty){
-        this.rewardCode = rewardCode;
+    protected Reward(String rewardID, String rewardDesc, String rewardType, int redeemPts, int rewardQty){
+        this.rewardID = rewardID;
         this.rewardDesc = rewardDesc;
         this.rewardType = rewardType;
         this.redeemPts = redeemPts;
@@ -22,8 +22,8 @@ public abstract class Reward {
     }
 
     //getter
-    public String getRewardCode(){
-        return rewardCode;
+    public String getRewardID(){
+        return rewardID;
     }
 
     public String getRewardDesc(){
@@ -51,6 +51,10 @@ public abstract class Reward {
         this.rewardDesc = rewardDesc;
     }
 
+    public void setRewardPts(int redeemPts){
+        this.redeemPts = redeemPts;
+    }
+
     public void setRedeemPts(int redeemPts){
         this.redeemPts = redeemPts;
     }
@@ -66,11 +70,12 @@ public abstract class Reward {
     //other method
     @Override
     public String toString(){
-        return "Reward Code : " + rewardCode +
+        return "Reward ID : " + rewardID +
             "\nReward Description : " + rewardDesc +
+            "\nReward Type : " + rewardType +
             "\nRedeem Points : " + redeemPts +
-            "\nReward Quantity" + rewardQty +
-            "\nReward Status" + rewardStatus;
+            "\nReward Quantity : " + rewardQty +
+            "\nReward Status : " + rewardStatus;
     }
 
     public static boolean isStringParamNotNullorEmpty(String str) {
@@ -86,13 +91,12 @@ public abstract class Reward {
     }
 
     public static boolean isRewardStatusValid(String rewardStatus){
-        return rewardStatus.equalsIgnoreCase("Listed") || rewardStatus.equalsIgnoreCase("Removed") 
+        return rewardStatus.equalsIgnoreCase("Listed") || rewardStatus.equalsIgnoreCase("Delisted") 
             || rewardStatus.equalsIgnoreCase("Out of Stock");
     }
 
     public void updateOutOfStockStatus(){
-        if (this.rewardQty == 0) {
+        if (this.rewardQty == 0) 
             setRewardStatus("Out of Stock");
-        }
     }
 }
