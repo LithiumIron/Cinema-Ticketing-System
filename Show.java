@@ -232,4 +232,33 @@ public class Show {
         System.out.printf("| %-6s | %-20s | %-15s | %-31s |\n", 
                           "-".repeat(6), "-".repeat(20), "-".repeat(15), "-".repeat(31));
     }
+
+    public static void displaySelectShowHeader(String movieTitle) {
+        String safeMovieTitle = Utils.truncate(movieTitle, 45); // 放宽名字限制
+        String headerText = safeMovieTitle + " : Date/Time Selection";
+        
+        int totalSpaces = 83 - headerText.length();
+        int padLeft = totalSpaces / 2;
+        int padRight = totalSpaces - padLeft;
+        
+        System.out.println("|" + " ".repeat(padLeft) + headerText + " ".repeat(padRight) + "|");
+    }
+
+    public static void displayShowInfoHeader() {
+        Utils.displayInnerLine();
+        System.out.printf("| %-6s | %-20s | %-15s | %-31s |\n", "ID", "Hall Name", "Show Date", "Showtime");
+        Utils.displayInnerLine();
+    }
+
+    public void displayShowDetails() {
+        String dHall = Utils.truncate(hall.getHallId(), 20);
+        String dDate = Utils.truncate(startDate, 15);
+        String dTime = Utils.truncate(startTime + " - " + endTime, 31);
+        System.out.printf("| %-6s | %-20s | %-15s | %-31s |\n", showId, dHall, dDate, dTime);
+    }
+
+    public static void displayEmptyShowRow() {
+        System.out.printf("| %-6s | %-20s | %-15s | %-31s |\n", 
+                          "-".repeat(6), "-".repeat(20), "-".repeat(15), "-".repeat(31));
+    }
 }
