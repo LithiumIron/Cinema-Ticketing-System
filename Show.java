@@ -246,7 +246,7 @@ public class Show {
 
     public static void displayShowInfoHeader() {
         Utils.displayInnerLine();
-        System.out.printf("| %-6s | %-20s | %-15s | %-31s |\n", "ID", "Hall Name", "Show Date", "Showtime");
+        System.out.printf("| %-6s | %-20s | %-15s | %-31s |\n", "ID", "Hall ID", "Show Date", "Showtime");
         Utils.displayInnerLine();
     }
 
