@@ -376,8 +376,8 @@ public class Seat {
 
     public boolean equals(Object obj) {
         if (obj instanceof Seat){
-        Seat seat = (Seat) obj;
-        return this.row == seat.row && this.col == seat.col;
+            Seat seat = (Seat) obj;
+            return this.row == seat.row && this.col == seat.col;
         }
         else
             return false;
