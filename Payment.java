@@ -1,5 +1,6 @@
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 public class Payment {
 //data properties
 private String paymentID;
@@ -18,7 +19,7 @@ private static final double TAX_RATE = 0.08;// 8% tax
 public Payment(){
 	this.paymentID = String.format("P%05d", counter++);
 	this.booking = new Booking();
-	this.paymentDate = " ";
+	this.paymentDate = "";
 	this.subTotal = 0.0;
 	this.tax = 0.0;
 	this.discountAmt = 0.0;
@@ -34,7 +35,6 @@ public Payment(Booking booking){
     this.tax = calculateTax();
     this.discountAmt = 0.0;
     this.totalAmount = calculateTotalAmount();
-
 } 
 //------------------------ getters -----------------------
 public String getPaymentID(){
@@ -79,47 +79,6 @@ public double calculateTax(){
 	return subTotal * TAX_RATE;
 }
 
-/*
-select cinema > select movie > select show > select seat > select food order > confirm booking >
-booking() > type code > selectReward() > isRewardTypeDiscount() > 
-calculateSubTotal() calculateDiscountAmt() > calculateTax() > calculatetotalAmt() > confirm payment > payment()
-*/
-
-public Redemption findUnusedRedemption(String rewardCode, Customer customer) {
-    if (rewardCode == null || customer == null) return null;
-
-    for (Redemption redemption : customer.getRedemptions()) {
-        Reward reward = redemption.getReward();
-        if (reward == null) continue;
-
-        boolean sameCode = rewardCode.equalsIgnoreCase(reward.getRewardCode());
-        boolean unused = "Unused".equalsIgnoreCase(redemption.getRedeemRewardStatus());
-
-        if (sameCode && unused) {
-            return redemption; 
-        }
-    }
-    return null; 
-}
-
-public boolean isMinimumSpendMet(Redemption redemption) {
-    return this.subTotal >= redemption.getReward().getRequiredSpend();
-}
-
-public void applyReward(Redemption redemption) {
-    Reward reward = redemption.getReward();
-
-    if (reward instanceof Discount) {
-        double percentage = ((Discount) reward).getPercentage();
-        this.discountAmt = this.subTotal * (percentage / 100.0);
-    } else {
-        this.discountAmt = 0.0; 
-    }
-
-    this.totalAmount = this.subTotal + this.tax - this.discountAmt;
-    redemption.setRedeemRewardStatus("Used");
-}
-
 public double calculateSubTotal(){
 	if (booking == null) {
 		return 0.0;
@@ -134,8 +93,31 @@ public double calculateSubTotal(){
 	return ticketTotal + foodTotal;
 }
 
+public boolean applyDiscountReward(String rewardCode, List<Reward> allRewards) {
+    if (rewardCode == null || allRewards == null) {
+        return false;
+    }
+
+    for (Reward reward : allRewards) {
+        if (rewardCode.equals(reward.getRewardID())) {
+            if (reward instanceof Discount) {
+                double percentage = ((Discount) reward).getPercentage();
+                
+                this.discountAmt = this.subTotal * (percentage / 100.0);
+                
+                this.totalAmount = this.subTotal + this.tax - this.discountAmt;
+                
+                return true;
+            }
+        }
+    }
+
+    System.out.println("Invalid reward code.");
+    return false; 
+}
+
 public double calculateTotalAmount(){
-	return subTotal + calculateTax();
+	return subTotal + calculateTax() - discountAmt;
 }
 
 public static String paymentHeader(){
@@ -172,8 +154,8 @@ public String toString() {
                         "Payment Date :" ,  paymentDate,
                         "Sub Total    :",    subTotal,
                         "Tax (8%)     :",    tax,
-                        "Discount     :",    discountAmt,    // 直接用属性
+                        "Discount     :",    discountAmt,  
                         " ",              "--------------------",
-                        "Total        :",    totalAmount);   // 直接用属性
+                        "Total        :",    totalAmount);  
     }
 }
