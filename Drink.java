@@ -69,4 +69,14 @@ public class Drink extends FoodOrder {
     }
 
     public String toString(){return getDrinkAndCost();}
+
+    public boolean equals(Object obj) {
+        if ((obj instanceof Drink)) {
+            Drink d=(Drink)obj;
+            return this.drinkID.equals(d.drinkID);
+        }
+        else 
+            return false;
+        
+    }  
 }
