@@ -6,6 +6,9 @@ public class Staff extends User {
     // ----------------------------------------------------------------
     // Constructor
     // ----------------------------------------------------------------
+    public Staff(){
+    	  this(" ", " ", " ", " ");
+    }
     public Staff(String staffID, String staffName, String username, String password) {
         super(staffID, username, password, "STAFF");
         this.staffID   = staffID;
