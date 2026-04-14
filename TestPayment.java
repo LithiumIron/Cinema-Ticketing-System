@@ -1,7 +1,7 @@
 import java.util.Scanner;
 import java.time.LocalDate;
 
-public class Testing {
+public class TestPayment {
     public static void main(String[] args) {
         Scanner scan = new Scanner(System.in);
 
