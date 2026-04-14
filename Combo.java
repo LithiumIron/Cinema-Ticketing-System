@@ -61,4 +61,14 @@ public class Combo extends FoodOrder {
     
    
     public String toString(){return getComboAndCost();}
+
+    public boolean equals(Object obj) {
+        if ((obj instanceof Combo)) {
+            Combo c=(Combo)obj;
+            return this.comboID.equals(c.comboID);
+        }
+        else 
+            return false;
+        
+    }  
 }
