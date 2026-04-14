@@ -1,14 +1,19 @@
-import java.util.ArrayList;
 import java.util.List;
+import java.util.ArrayList;
 
  class Customer extends User {
  
     private String customerID;
     private int    rewardPts;
+    //private final List<Redemption> redemptions;
  
     // ----------------------------------------------------------------
     // Constructor
     // ----------------------------------------------------------------
+    
+    public Customer(){
+    	   this(" ", " ", " ");
+    }
     public Customer(String customerID, String username, String password) {
         super(customerID, username, password, "CUSTOMER");
         this.customerID  = customerID;
@@ -20,7 +25,7 @@ import java.util.List;
     // ----------------------------------------------------------------
     public String getCustomerID()  { return customerID; }
     public int    getRewardPts() { return rewardPts; }
- 
+   
     // ----------------------------------------------------------------
     // Setters
     // ----------------------------------------------------------------
@@ -54,6 +59,32 @@ import java.util.List;
         return String.format("Customer[ID=%-6s | Username=%-15s | RewardPoints=%d]",
                 customerID, getUsername(), rewardPts);
     }
+
+    /**
+     * Check if this customer has a redemption for the given reward code
+     * whose status is "Unused".
+     */
+   /* public boolean selectReward(String rewardCode) {
+        if (rewardCode == null) {
+            return false;
+        }
+
+        for (Redemption redemption : redemptions) {
+            Reward reward = redemption.getReward();
+            if (reward == null) {
+                continue;
+            }
+
+            boolean sameCode = rewardCode.equalsIgnoreCase(reward.getRewardID());
+            boolean unused = "Unused".equalsIgnoreCase(redemption.getRedeemRewardStatus());
+
+            if (sameCode && unused) {
+                return true;
+            }
+        }
+
+        return false;
+    }*/
 
     public boolean equals(Object obj) {
         if (this == obj) return true;
