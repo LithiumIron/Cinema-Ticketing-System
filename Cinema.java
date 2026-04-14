@@ -86,7 +86,7 @@ public class Cinema {
         return String.format("C%03d", cinemaCounter);
     }
 
-    public Boolean IsPostalCodeFormatValid(String postalCode){
+    public static Boolean IsPostalCodeFormatValid(String postalCode){
         if (postalCode.trim().length() != 5) {
             return false;
         }
