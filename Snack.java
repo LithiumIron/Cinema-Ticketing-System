@@ -42,9 +42,9 @@ public class Snack extends FoodOrder {
         }
         return sb.toString();
     }
-    public double getSnackCost(int index) {
-        if (index >= 0 && index < snackID.length) {
-            String id = snackID[index];
+    public double getSnackCost(int i) {
+        if (i >= 0 && i < snackID.length) {
+            String id = snackID[i];
             return snackCost.get(id);
         }
         return 0.0;
