@@ -106,23 +106,23 @@ public class Show {
         return String.format("S%05d", showCounter);
     }
 
-    public LocalDate getStartDateAsLocalDate(String startDate) {
+    public static LocalDate getStartDateAsLocalDate(String startDate) {
         String start = startDate.trim();
         return LocalDate.parse(start, DateTimeFormatter.ISO_LOCAL_DATE);
     }
 
-    public LocalTime getStartTimeAsLocalTime(String startTime) {
+    public static LocalTime getStartTimeAsLocalTime(String startTime) {
         String start = startTime.trim();
         return LocalTime.parse(start, DateTimeFormatter.ofPattern("HH:mm")); 
     }
 
-    public LocalDateTime getStartDateTime(String startDate, String startTime) {
+    public static LocalDateTime getStartDateTime(String startDate, String startTime) {
         LocalDate showDate = getStartDateAsLocalDate(startDate); 
         LocalTime showTime = getStartTimeAsLocalTime(startTime); 
         return LocalDateTime.of(showDate, showTime);
     }
 
-    public boolean isDateFormatValid(String startDate) {
+    public static boolean isDateFormatValid(String startDate) {
         if (startDate == null || startDate.isEmpty()) {
             return false;
         }
@@ -134,7 +134,7 @@ public class Show {
         }
     }
 
-    public boolean isTimeFormatValid(String startTime) {
+    public static boolean isTimeFormatValid(String startTime) {
         if (startTime == null || startTime.isEmpty()) {
             return false;
         }
@@ -146,7 +146,7 @@ public class Show {
         }
     }
 
-    public boolean isStartDateNotInPast(String startDate) {
+    public static boolean isStartDateNotInPast(String startDate) {
         try {
             LocalDate start = getStartDateAsLocalDate(startDate);
             return !start.isBefore(LocalDate.now());
@@ -155,7 +155,7 @@ public class Show {
         }
     }
 
-    public boolean isStartTimeInFuture(String startDate, String startTime) {
+    public static boolean isStartTimeInFuture(String startDate, String startTime) {
         try {
             LocalDateTime startDateTime = getStartDateTime(startDate, startTime);
             return startDateTime.isAfter(LocalDateTime.now());
@@ -218,35 +218,6 @@ public class Show {
     public static void displayShowInfoHeader() {
         Utils.displayInnerLine();
         System.out.printf("| %-6s | %-20s | %-15s | %-31s |\n", "ID", "Hall Name", "Show Date", "Showtime");
-        Utils.displayInnerLine();
-    }
-
-    public void displayShowDetails() {
-        String dHall = Utils.truncate(hall.getHallId(), 20);
-        String dDate = Utils.truncate(startDate, 15);
-        String dTime = Utils.truncate(startTime + " - " + endTime, 31);
-        System.out.printf("| %-6s | %-20s | %-15s | %-31s |\n", showId, dHall, dDate, dTime);
-    }
-
-    public static void displayEmptyShowRow() {
-        System.out.printf("| %-6s | %-20s | %-15s | %-31s |\n", 
-                          "-".repeat(6), "-".repeat(20), "-".repeat(15), "-".repeat(31));
-    }
-
-    public static void displaySelectShowHeader(String movieTitle) {
-        String safeMovieTitle = Utils.truncate(movieTitle, 45); // 放宽名字限制
-        String headerText = safeMovieTitle + " : Date/Time Selection";
-        
-        int totalSpaces = 83 - headerText.length();
-        int padLeft = totalSpaces / 2;
-        int padRight = totalSpaces - padLeft;
-        
-        System.out.println("|" + " ".repeat(padLeft) + headerText + " ".repeat(padRight) + "|");
-    }
-
-    public static void displayShowInfoHeader() {
-        Utils.displayInnerLine();
-        System.out.printf("| %-6s | %-20s | %-15s | %-31s |\n", "ID", "Hall ID", "Show Date", "Showtime");
         Utils.displayInnerLine();
     }
 
