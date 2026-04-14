@@ -4,7 +4,10 @@ public abstract class User {
     private String username;
     private String password;
     private String role;
- 
+    
+    public User(){
+    	   this(" ", " ", " ", " ");
+    }
     public User(String userID, String username, String password, String role) {
         this.userID   = userID;
         this.username = username;
