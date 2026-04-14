@@ -78,9 +78,9 @@ public class Movie {
     //---equals---
     public boolean equals(Object obj) {
         if (this == obj) return true;
-        if (obj == null || !(obj instanceof Hall)) return false;
-        Hall other = (Hall) obj;
-        return this.hallId != null && this.hallId.equalsIgnoreCase(other.hallId);
+        if (obj == null || !(obj instanceof Movie)) return false;
+        Movie other = (Movie) obj;
+        return this.movieId != null && this.movieId.equalsIgnoreCase(other.movieId);
     }
 
     //---generate next id---
