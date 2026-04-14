@@ -375,10 +375,12 @@ public class Seat {
     }
 
     public boolean equals(Object obj) {
-        if (this == obj) return true;
-        if (!(obj instanceof Seat)) return false;
-        Seat other = (Seat) obj;
-        return this.row == other.row && this.col == other.col;
+        if (obj instanceof Seat){
+        Seat seat = (Seat) obj;
+        return this.row == seat.row && this.col == seat.col;
+        }
+        else
+            return false;
     }
 
 }
