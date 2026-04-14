@@ -75,6 +75,14 @@ public class Movie {
                 getMovieId(), getTitle(), getGenre(), getDuration(), getAgeRating(), getStatus());
     }
 
+    //---equals---
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || !(obj instanceof Hall)) return false;
+        Hall other = (Hall) obj;
+        return this.hallId != null && this.hallId.equalsIgnoreCase(other.hallId);
+    }
+
     //---generate next id---
     private static String generateNextId() {
         String id = String.format("M%03d", nextIdNumber);//M001,M002,M003
