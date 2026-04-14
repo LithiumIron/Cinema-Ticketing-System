@@ -1,4 +1,3 @@
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
     
@@ -42,13 +41,7 @@ public class Snack extends FoodOrder {
         }
         return sb.toString();
     }
-    public double getSnackCost(int i) {
-        if (i >= 0 && i < snackID.length) {
-            String id = snackID[i];
-            return snackCost.get(id);
-        }
-        return 0.0;
-    }
+    public Map<String, Double> getSnackCost() {return snackCost;}
     public String[] getSnackID() {return snackID;}
     public Map<String, String> getSnack() {return snack;}
 
@@ -79,11 +72,13 @@ public class Snack extends FoodOrder {
     public String toString(){return getSnackAndCost();}
 
     public boolean equals(Object obj) {
-        if (this == obj) return true;
-        if (!(obj instanceof Snack)) return false;
-        return Arrays.equals(snackID, ((Snack) obj).snackID) &&
-               snack.equals(((Snack) obj).snack) &&
-               snackCost.equals(((Snack) obj).snackCost);
+        if ((obj instanceof Snack)) {
+            Snack s=(Snack)obj;
+            return this.snackID.equals(s.snackID);
+        }
+        else 
+            return false;
+        
     }    
 
 
