@@ -25,6 +25,10 @@ public class Redemption {
         this.redeemRewardStatus = redeemRewardStatus;
     }
 
+    public String toString() {
+        return reward.toString() + "\nStatus: " + redeemRewardStatus;
+    }
+
     public boolean isRewardQtyEnough(int redeemQty){
         return redeemQty <= this.reward.getRewardQty();
     }
@@ -40,16 +44,10 @@ public class Redemption {
     }
 
     public void redeemReward(Customer customer,int redeemQty){
-        int customerPts = customer.getRewardPts();
-        int totalRedeemPts = calculateTotalRedeemPts(redeemQty);
-        int latestPts = customerPts - totalRedeemPts;
-        customer.setRewardPts(latestPts);
-
-        List<Redemption> customerReward = customer.getRedemptions();
-        customerReward.add(this);
-
-        int previousQty = reward.getRewardQty();
-        reward.setRewardQty(previousQty - redeemQty);
-        reward.updateOutOfStockStatus();
+        if (isRewardQtyEnough(redeemQty) && isRewardPtsEnough(redeemQty, customer)) {
+            int totalRedeemPts = calculateTotalRedeemPts(redeemQty);
+            customer.setRewardPts(customer.getRewardPts() - totalRedeemPts);
+            this.reward.setRewardQty(this.reward.getRewardQty() - redeemQty);
+        }
     }
 }
