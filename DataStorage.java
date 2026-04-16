@@ -70,11 +70,11 @@ public class DataStorage {
         return true;
     }
     
-    public void addBooking(String customerID, Booking booking) {
+    public void addBooking(String customerID, Booking booking, Payment payment) {
       if (booking == null)
         throw new IllegalArgumentException("Booking cannot be null.");
       bookings.add(booking);
-      saveBookingToFile(customerID, booking);
+      saveBookingToFile(customerID, booking, payment);
     }
  
     // ================================================================
@@ -159,7 +159,7 @@ public class DataStorage {
             System.out.println("  [Storage] Customer not found: " + customerID);
             return false;
         }
-        c.setRewardPoint(newPoints);
+        c.setRewardPts(newPoints);
         saveAll();
         return true;
     }
@@ -212,7 +212,7 @@ public class DataStorage {
                 bw.write("CUSTOMER|" + c.getCustomerID()  + "|"
                                      + c.getUsername()    + "|"
                                      + c.getPassword()    + "|"   
-                                     + c.getRewardPoint());
+                                     + c.getRewardPts());
                 bw.newLine();
             }
             for (Staff s : staffList) {
@@ -229,7 +229,7 @@ public class DataStorage {
     }
     
     // BOOKING - SAVE one booking (append to file)
-    private void saveBookingToFile(String customerID, Booking booking) {
+    private void saveBookingToFile(String customerID, Booking booking, Payment payment) {
         try (BufferedWriter bw = new BufferedWriter(
                 new FileWriter(BOOKING_FILE, true))) {
 
@@ -239,6 +239,8 @@ public class DataStorage {
             String hallId     = "N/A";
             int    ticketCnt  = 0;
             double totalFood  = 0.0;
+            double totalAmount  = 0.0;
+            double discountAmt  = 0.0;
 
             if (booking.getShow() != null) {
                 Show s = booking.getShow();
@@ -249,7 +251,11 @@ public class DataStorage {
             }
             if (booking.getTickets()   != null) ticketCnt = booking.getTickets().length;
             if (booking.getFoodOrder() != null) totalFood = booking.getFoodOrder().getTotalPrice();
-
+            if (payment               != null) {
+               totalAmount = payment.getTotalAmount();
+               discountAmt = payment.getDiscountAmt();
+            }
+            
             // Format: customerID|movieTitle|showDate|showTime|hallId|ticketCount|foodTotal
             bw.write(customerID + "|" +
                      movieTitle + "|" +
@@ -257,7 +263,9 @@ public class DataStorage {
                      showTime   + "|" +
                      hallId     + "|" +
                      ticketCnt  + "|" +
-                     String.format("%.2f", totalFood));
+                     String.format("%.2f", totalFood)  + "|" +
+                     String.format("%.2f", totalAmount) + "|" +
+                     String.format("%.2f", discountAmt));
             bw.newLine();
 
         } catch (IOException e) {
@@ -302,7 +310,7 @@ public class DataStorage {
                     try { pts = Integer.parseInt(extra); }
                     catch (NumberFormatException ignored) {}
                     Customer c = new Customer(id, username, password);
-                    c.setRewardPoint(pts);
+                    c.setRewardPts(pts);
                     customers.add(c);
  
                 } else if (role.equals("STAFF")) {
