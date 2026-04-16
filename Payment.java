@@ -11,7 +11,7 @@ private double discountAmt;
 private double totalAmount;
 private String paymentDate;
 
-private static int counter = 0;
+private static int counter = 1;
 private static final double TAX_RATE = 0.08;// 8% tax
 
 
@@ -27,7 +27,6 @@ public Payment(){
 }
 
 public Payment(Booking booking){
-
     this.paymentID = String.format("P%05d", counter++);
     this.booking = booking;
     this.paymentDate = LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss"));
@@ -80,38 +79,49 @@ public double calculateTax(){
 }
 
 public double calculateSubTotal(){
-	if (booking == null) {
-		return 0.0;
-	}
+    if (booking == null) return 0.0;
 
-	Ticket[] tickets = booking.getTickets();
-	FoodOrder foodOrder = booking.getFoodOrder();
+    double ticketTotal = 0.0;
+    Ticket[] tickets = booking.getTickets();
+    if (tickets != null && tickets.length > 0) {
+        ticketTotal = Ticket.calculateTicketTotal(tickets);
+    }
 
-	double ticketTotal = (tickets == null) ? 0.0 : Ticket.calculateTicketTotal(tickets);
-	double foodTotal = (foodOrder == null) ? 0.0 : foodOrder.getTotalPrice();
+    double foodTotal = 0.0;
+    FoodOrder foodOrder = booking.getFoodOrder();
+    if (foodOrder != null) {
+        foodTotal = foodOrder.getTotalPrice();
+    }
 
-	return ticketTotal + foodTotal;
+    return ticketTotal + foodTotal;
 }
 
-public boolean applyDiscountReward(String rewardCode, List<Reward> allRewards) {
-    if (rewardCode == null || allRewards == null) {
-        return false;
-    }
+public boolean applyReward(String rewardCode, List<Reward> allRewards) {
+    if (rewardCode == null || allRewards == null) return false;
 
     for (Reward reward : allRewards) {
         if (rewardCode.equals(reward.getRewardID())) {
+            
+            this.subTotal = calculateSubTotal();
+            
             if (reward instanceof Discount) {
                 double percentage = ((Discount) reward).getPercentage();
-                
                 this.discountAmt = this.subTotal * (percentage / 100.0);
-                
-                this.totalAmount = this.subTotal + this.tax - this.discountAmt;
-                
+                this.tax = calculateTax();
+                this.totalAmount = calculateTotalAmount();
+                return true;
+            }
+            
+            if (reward instanceof Freebie) {
+                Freebie freebie = (Freebie) reward;
+                System.out.println("Freebie successfully redeemed: " + freebie.getFreebieItems());
+                this.discountAmt = 0.0; 
+                this.tax = calculateTax(); 
+                this.totalAmount = calculateTotalAmount();
                 return true;
             }
         }
     }
-
     System.out.println("Invalid reward code.");
     return false; 
 }
@@ -145,17 +155,44 @@ public void earnRewardPts(Customer customer){
 }
 
 
-public String toString() {
-        return String.format("%-16s %s\n" + "%-16s %s\n\n" +
+public String toString(String rewardCode, List<Reward> allRewards) {
+    double currentTax = calculateTax();
+    double currentTotal = calculateTotalAmount();
+    String discountDisplay = String.format("-RM %.2f", this.discountAmt);
+
+    if (rewardCode != null && !rewardCode.isEmpty()) {
+        for (Reward r : allRewards) {
+            if (r.getRewardID().equals(rewardCode)) {
+                
+                if (r instanceof Discount) {
+                    Discount d = (Discount) r; 
+                    
+                    double percentage = d.getPercentage();
+                    discountDisplay = String.format("-RM %.2f (%.0f%%)", this.discountAmt, percentage);
+                } 
+
+                break;
+            }
+        }
+    }
+
+    return String.format("%-16s %s\n" + "%-16s %s\n\n" +
                         "%-16s RM %.2f\n" + "%-16s RM %.2f\n" +
-                        "%-16s -RM %.2f\n" + "%-16s %s\n" +
+                        "%-16s %s\n" +      
+                        "%-16s %s\n" + 
                         "%-16s RM %.2f\n",
-                        "Payment ID   :",    paymentID,
-                        "Payment Date :" ,  paymentDate,
-                        "Sub Total    :",    subTotal,
-                        "Tax (8%)     :",    tax,
-                        "Discount     :",    discountAmt,  
-                        " ",              "--------------------",
-                        "Total        :",    totalAmount);  
+                        "Payment ID    :", paymentID,
+                        "Payment Date  :", paymentDate,
+                        "Sub Total     :", subTotal,
+                        "Tax (8%)      :", currentTax, 
+                        "Discount      :", discountDisplay, 
+                        " ",               "--------------------",
+                        "Total         :", currentTotal); 
+}
+
+public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (!(obj instanceof Payment)) return false;
+        return paymentID.equals(((Payment) obj).paymentID);
     }
 }
