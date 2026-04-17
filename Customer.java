@@ -44,6 +44,8 @@ import java.util.ArrayList;
         System.out.println("  +===============================");
         System.out.println("  |  [1] View My Profile         |");
         System.out.println("  |  [2] Delete My Account       |");
+        System.out.println("  |  [3] Booking                 |");
+        System.out.println("  |  [4] Redeem Reward           |");
         System.out.println("  |  [0] Logout                  |");
         System.out.println("  ================================");
     }
