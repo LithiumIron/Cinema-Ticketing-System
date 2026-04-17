@@ -2,6 +2,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 public class Payment {
+	
 //data properties
 private String paymentID;
 private Booking booking;
