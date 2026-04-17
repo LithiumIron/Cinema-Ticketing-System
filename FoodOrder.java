@@ -140,7 +140,7 @@ public class FoodOrder {
     public boolean equals(Object obj){
         if(obj instanceof FoodOrder){
             FoodOrder fo= (FoodOrder)obj;
-            return this.orderNo.equals(fo.orderNo);
+            return this.orderNo == fo.orderNo;
         }
         else
             return false;
