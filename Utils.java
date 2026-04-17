@@ -47,11 +47,17 @@ public class Utils {
         System.out.println("|" + "-".repeat(83) + "|");
     }
 
-    public static void displayEmptyRow() {
-        System.out.printf("| %-4s | %-30s | %-15s | %-23s |\n", 
-                          "-".repeat(4), 
-                          "-".repeat(30), 
-                          "-".repeat(15), 
-                          "-".repeat(23));
+    public static void displayEmptyRow(int... widths) {
+        StringBuilder format = new StringBuilder("|");
+        Object[] separators = new Object[widths.length];
+
+        for (int i = 0; i < widths.length; i++) {
+            format.append(" %-").append(widths[i]).append("s |");
+            separators[i] = "-".repeat(widths[i]);
+        }
+        format.append("\n");
+
+        System.out.printf(format.toString(), separators);
+        }
     }
 }
