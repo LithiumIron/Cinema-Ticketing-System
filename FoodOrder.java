@@ -135,6 +135,15 @@ public class FoodOrder {
     public String toString(){
         return String.format("Order No: %d\nOrder: %s\nCost: RM%.2f", 
                             orderNo, getOrder(), totalPrice);
+    
     }  
+    public boolean equals(Object obj){
+        if(obj instanceof FoodOrder){
+            FoodOrder fo= (FoodOrder)obj;
+            return this.orderNo.equals(fo.orderNo);
+        }
+        else
+            return false;
+    }    
     
 }//class end
