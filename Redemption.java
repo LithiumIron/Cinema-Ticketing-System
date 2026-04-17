@@ -1,18 +1,22 @@
-import java.util.List;
-
 public class Redemption {
+    private String redemptionID;
     private Reward reward;
     private String redeemRewardStatus;
+    private static int redeemCounter = 1;
 
     public Redemption(){
         this(null);
     }
 
     public Redemption(Reward reward) {
+        this.redemptionID = generateRedeemID();
         this.reward = reward;
         this.redeemRewardStatus = "Unused";
     }
 
+    public String getRedemptionID(){
+        return redemptionID;
+    }
     public Reward getReward() {
         return reward;
     }
@@ -27,6 +31,10 @@ public class Redemption {
 
     public String toString() {
         return reward.toString() + "\nStatus: " + redeemRewardStatus;
+    }
+
+    public String generateRedeemID(){
+        return String.format("RD%03d", redeemCounter++);
     }
 
     public boolean isRewardQtyEnough(int redeemQty){
