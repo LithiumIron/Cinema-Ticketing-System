@@ -10,6 +10,9 @@ public class Report {
     // ----------------------------------------------------------------
     // Constructor
     // ----------------------------------------------------------------
+    public Report(){
+    	   this(" ", " ");
+    }
     public Report(String reportID, String reportType) {
         this.reportID   = reportID;
         this.reportType = reportType;
@@ -46,8 +49,8 @@ public class Report {
         int totalPoints = 0;
         for (Customer c : customers) {
             System.out.printf("  %-8s %-18s %-14d%n",
-                    c.getCustomerID(), c.getUsername(), c.getRewardPoint());
-            totalPoints += c.getRewardPoint();
+                    c.getCustomerID(), c.getUsername(), c.getRewardPts());
+            totalPoints += c.getRewardPts();
         }
  
         System.out.println("  " + "-".repeat(42));
@@ -232,16 +235,16 @@ public class Report {
         }
  
         // Sort descending by reward points
-        customers.sort((a, b) -> b.getRewardPoint() - a.getRewardPoint());
+        customers.sort((a, b) -> b.getRewardPts() - a.getRewardPts());
  
         System.out.printf("  %-5s %-18s %-14s%n", "Rank", "Username", "Reward Points");
         System.out.println("  " + "-".repeat(42));
  
         int rank = 1;
         for (Customer c : customers) {
-            String bar = "?".repeat(Math.min(c.getRewardPoint(), 10));
+            String bar = "?".repeat(Math.min(c.getRewardPts(), 10));
             System.out.printf("  %-5d %-18s %-5d %s%n",
-                    rank++, c.getUsername(), c.getRewardPoint(), bar);
+                    rank++, c.getUsername(), c.getRewardPts(), bar);
         }
         printFooter();
     }
@@ -260,7 +263,7 @@ public class Report {
  
         int totalPoints = 0;
         for (Customer c : storage.getAllCustomers())
-            totalPoints += c.getRewardPoint();
+            totalPoints += c.getRewardPts();
         System.out.println("  Total Reward Pts: " + totalPoints);
  
         printFooter();
