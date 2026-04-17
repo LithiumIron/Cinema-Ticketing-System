@@ -217,12 +217,13 @@ public class Hall {
     }
 
     //---display all halls---
-    private static void displayAllHalls() {
-        System.out.println("\n===== ALL HALLS =====");
-        for (Hall h : hallList) {
-            System.out.println("ID: " + h.getHallId() + " | Type: " + h.getType());
+    public int getSeatHallNumber() {
+        switch (type) {
+            case "Small": return Seat.SMALL_HALL;
+            case "Medium": return Seat.MEDIUM_HALL;
+            case "Large": return Seat.LARGE_HALL;
+            default: return 1;
         }
-        System.out.println("=====================\n");
     }
 
     //---display All Hall Details---
