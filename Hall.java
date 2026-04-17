@@ -49,15 +49,6 @@ public class Hall {
         return "ID: " + getHallId() + " | Type: " + getType();
     }
 
-    // ==================== equals ====================
-    public boolean equals(Object obj) {
-        if (this == obj) return true;
-        if (obj == null || !(obj instanceof Hall)) return false;
-        Hall other = (Hall) obj;
-        return this.hallId != null && this.hallId.equalsIgnoreCase(other.hallId);
-    }
-    
-
     //generate next hall id
     private static String generateNextId() {
         String id = String.format("H%03d", nextIdNumber);
@@ -138,6 +129,16 @@ public class Hall {
 
     // ==================== METHODS ====================
 
+    public int getSeatHallNumber() {
+        switch (type) {
+            case "Small": return Seat.SMALL_HALL;
+            case "Medium": return Seat.MEDIUM_HALL;
+            case "Large": return Seat.LARGE_HALL;
+            default: return 1;
+        }
+    }
+
+
     //---add hall by type---
     public static void addHallByType(int typeChoice) {
         String type = "";
@@ -213,17 +214,16 @@ public class Hall {
         System.out.println("Total Number of Halls: " + hallList.size());
         System.out.println("================================");
 
-         Utils.pause();
+        Utils.pause();
     }
 
     //---display all halls---
-    public int getSeatHallNumber() {
-        switch (type) {
-            case "Small": return Seat.SMALL_HALL;
-            case "Medium": return Seat.MEDIUM_HALL;
-            case "Large": return Seat.LARGE_HALL;
-            default: return 1;
+    private static void displayAllHalls() {
+        System.out.println("\n===== ALL HALLS =====");
+        for (Hall h : hallList) {
+            System.out.println("ID: " + h.getHallId() + " | Type: " + h.getType());
         }
+        System.out.println("=====================\n");
     }
 
     //---display All Hall Details---
@@ -243,7 +243,7 @@ public class Hall {
 
         System.out.println("\nTotal halls: " + hallList.size());
 
-         Utils.pause();
+        Utils.pause();
     }
 
     // ==================== SEAT MAP DISPLAY ====================
@@ -270,7 +270,7 @@ public class Hall {
                 case 3: printLargeHall();break;
             }
 
-             Utils.pause();
+            Utils.pause();
         }
     }
 
@@ -324,18 +324,10 @@ public class Hall {
         System.out.println("\nHall Capacity: 143 seats");
     }
 
-
-        //=========== customer Section ===========
+    //=========== customer Section ===========
 
                                                                                                                                                                                                     
-    private int getSeatHallNumber() {
-        switch (type) {
-            case "Small": return Seat.SMALL_HALL;
-            case "Medium": return Seat.MEDIUM_HALL;
-            case "Large": return Seat.LARGE_HALL;
-            default: return 1;
-        }
-}
+  
 
 // Display seat map for this hall
     public void displaySeatMap() {
