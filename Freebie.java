@@ -2,9 +2,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Freebie extends Reward{
-    //data attributes
+    //data properties
     private Map<String, Integer> freebieItems;
-    private static int sequence = 0;
+    private static int sequence = 1;
 
     //no-arg constructor
     public Freebie() {
@@ -15,6 +15,7 @@ public class Freebie extends Reward{
     public Freebie(String rewardDesc, int redeemPts, int rewardQty, Map<String, Integer> freebieItems) {
         super(generateNewCode(), rewardDesc, "Freebie", redeemPts, rewardQty);
         this.freebieItems = freebieItems;
+        sequence++;
     }
 
     //getter
@@ -35,6 +36,12 @@ public class Freebie extends Reward{
     public String toString(){
         return super.toString() + 
             "\nFreebie Items : " + freebieItems;
+    }
+
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (!(obj instanceof Freebie)) return false;
+        return this.getRewardID().equals(((Freebie) obj).getRewardID());
     }
 
     public static boolean isStringParamNotNullorEmpty(String str) {
@@ -90,7 +97,6 @@ public class Freebie extends Reward{
     }
 
     private static String generateNewCode() {
-        sequence++;
         return String.format("F%03d", sequence);
     }
 }
