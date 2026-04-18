@@ -1,10 +1,6 @@
 import java.io.*;
 import java.util.*;
 
-/**
- * Seat class - Manages seats for 3 fixed halls
- * Small Hall (1), Medium Hall (2), Large Hall (3)
- */
 public class Seat {
     public static Scanner scan=new Scanner(System.in);
     // Hall no
@@ -146,7 +142,7 @@ public class Seat {
         System.out.println("\nCapacity: " + (rows * cols) + " seats");
         System.out.println("Available: " + getAvailableCount(hallNo) + " seats");
         System.out.println("Booked: " + getBookedCount(hallNo) + " seats");
-        System.out.println("Legend: o = Available, X = Booked");
+        System.out.println("Seat Slot: o = Available, X = Booked");
     }
     
     // ========== BOOK A SEAT ==========
