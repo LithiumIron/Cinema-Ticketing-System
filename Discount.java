@@ -1,7 +1,7 @@
 public class Discount extends Reward{
-    //data attributes
+    //data properties
     private double percentage;
-    private static int sequence = 0;
+    private static int sequence = 1;
 
     //no-arg constructor
     public Discount(){
@@ -12,6 +12,7 @@ public class Discount extends Reward{
     public Discount(String rewardDesc, int redeemPts, int rewardQty, double percentage){
         super(generateNewCode(), rewardDesc, "Discount", redeemPts, rewardQty);
         this.percentage = percentage;
+        sequence++;
     }
 
     //getter
@@ -35,12 +36,17 @@ public class Discount extends Reward{
             "\nDiscount Percentage : " + percentage + "%";
     }
 
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (!(obj instanceof Discount)) return false;
+        return this.getRewardID().equals(((Discount) obj).getRewardID());
+    }
+
     public static boolean isPercentageValid(double percentage){
         return percentage > 0 && percentage < 100;
     }
 
     private static String generateNewCode() {
-        sequence++;
-        return String.format("D%05d", sequence);
+        return String.format("D%03d", sequence);
     }
 }
