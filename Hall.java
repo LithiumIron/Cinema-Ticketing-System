@@ -335,13 +335,13 @@ public class Hall {
         Utils.clearScreen(80);
         switch(hallNo) {
             case Seat.SMALL_HALL: 
-                System.out.println("\n      Small Hall");
+                System.out.println("         Small Hall");
                 System.out.println("      ---------------");
                 System.out.println("   __/    SCREEN     \\__");
                 System.out.println("");
                 break;
             case Seat.MEDIUM_HALL:
-                System.out.println("             Medium Hall");
+                System.out.println("            Medium Hall");
                 System.out.println("      -------------------------");
                 System.out.println("  ___/         SCREEN         \\___");
                 System.out.println("");
@@ -364,6 +364,7 @@ public class Hall {
         Seat.bookSeat(hallNo, seatInput);  
         
     }
+    
     
     // Cancel a booking in this hall
     public void cancelBooking(String seatInput) {
