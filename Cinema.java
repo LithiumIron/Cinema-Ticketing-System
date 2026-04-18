@@ -1,7 +1,9 @@
 import java.util.ArrayList;
 
+import org.jcp.xml.dsig.internal.dom.Utils;
+
 public class Cinema {
-    //data attributes
+    //data properties
     private String cinemaId;
     private String cinemaName;
     private String state;
@@ -76,10 +78,17 @@ public class Cinema {
 
     //other methods
     public String toString() {
-        return "Cinema Name: " + cinemaName + 
+        return "Cinema ID: " + cinemaId +
+        "\nCinema Name: " + cinemaName + 
         "\nState: " + state + 
         "\nCity: " + city + 
         "\nPostal Code: " + postalCode;
+    }
+
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (!(obj instanceof Cinema)) return false;
+        return cinemaId.equals(((Cinema) obj).cinemaId);
     }
 
     private String generateCinemaId() {
@@ -102,19 +111,12 @@ public class Cinema {
     }
 
     public static void displayCinemaInfoHeader() {
-        Utils.displayInnerLine();
         System.out.printf("| %-4s | %-30s | %-15s | %-23s |\n", "ID", "Cinema Name", "State", "City");
-        Utils.displayInnerLine();
     }
 
     public void displayCinemaDetails() {
-        String dName = Utils.truncate(cinemaName, 30);
-        String dCity = Utils.truncate(city, 23);
-        System.out.printf("| %-4s | %-30s | %-15s | %-23s |\n", cinemaId, dName, state, dCity);
-    }
-
-    public static void displayEmptyRow() {
-        System.out.printf("| %-4s | %-30s | %-15s | %-23s |\n", 
-                          "-".repeat(4), "-".repeat(30), "-".repeat(15), "-".repeat(23));
+        String cinemaName = Utils.truncate(this.cinemaName, 30);
+        String city = Utils.truncate(this.city, 23);
+        System.out.printf("| %-4s | %-30s | %-15s | %-23s |\n", cinemaId, cinemaName, state, city);
     }
 }
