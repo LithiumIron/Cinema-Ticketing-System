@@ -61,6 +61,9 @@ public class Movie {
     public String getDuration(){return duration;}
     public int getAgeRating(){return ageRating;}
     public String getStatus(){return status;}
+    
+    
+    public static List<Movie> getAllMovies(){return movieList;}
 
     // ========= Setter ==========
     public void setTitle(String title){this.title = title;}
@@ -163,6 +166,10 @@ public class Movie {
 
     //---add movie---
     public static void addMovie(Movie m) {
+        if (findMovieById(m.getMovieId()) != null) {
+            System.out.println("Movie ID " + m.getMovieId() + " already exists. Skipping add.");
+            return;
+        }
         movieList.add(m);
         saveToFile();
         System.out.println("\nMovie added successfully!");
@@ -301,6 +308,12 @@ public class Movie {
         System.out.println("\nTotal number of movies: " + movieList.size());
     }
 
+    //---display empty movie row---
+    public static void displayEmptyMovieRow() {
+        System.out.printf("| %-4s | %-28s | %-19s | %-8s | %-10s |\n", 
+                          "-".repeat(4), "-".repeat(28), "-".repeat(19), "-".repeat(8), "-".repeat(10));
+    }
+    
     // ==================== HELPER METHODS ====================
     private static List<Movie> filterByGenre(String genre) {
         List<Movie> result = new ArrayList<>();
