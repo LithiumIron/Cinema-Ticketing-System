@@ -78,8 +78,10 @@ public abstract class Reward {
             "\nReward Status : " + rewardStatus;
     }
 
-    public static boolean isStringParamNotNullorEmpty(String str) {
-        return str != null && !str.trim().isEmpty();    //for desc, status, cond
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (!(obj instanceof Reward)) return false;
+        return rewardID.equals(((Reward) obj).rewardID);
     }
 
     public static boolean isRedeemPtsValid(int redeemPts){
@@ -93,5 +95,18 @@ public abstract class Reward {
     public void updateOutOfStockStatus(){
         if (this.rewardQty == 0) 
             setRewardStatus("Out of Stock");
+    }
+
+    public static void displayRewardRedemptionHeader(){
+        System.out.println("|" + " ".repeat(33) + "Reward Redemption" + " ".repeat(33) + "|");
+    }
+
+    public static void displayRewardInfoHeader() {
+        System.out.printf("| %-4s | %-34s | %-11s | %-12s | %-8s |\n", "ID", "Reward Description", "Reward Type", "Redeem Point", "Quantity");
+    }
+
+    public void displayRewardDetails() {
+        String rewardDesc = Utils.truncate(this.rewardDesc, 34);
+        System.out.printf("| %-4s | %-34s | %-11s | %-12s | %-8s |\n", rewardID, rewardDesc, rewardType, redeemPts, rewardQty);
     }
 }
