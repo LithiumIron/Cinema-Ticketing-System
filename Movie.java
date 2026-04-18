@@ -71,16 +71,8 @@ public class Movie {
 
     //---to string---
     public String toString() {
-        return String.format("ID: %-6s | Title: %-20s | Genre: %-12s | Duration: %6s | Rating: %2d | Status: %-12s",
+        return String.format("ID: %-6s | Title: %-20s | Genre: %-12s | Duration: %3d | Rating: %2d | Status: %-12s",
                 getMovieId(), getTitle(), getGenre(), getDuration(), getAgeRating(), getStatus());
-    }
-
-    //---equals---
-    public boolean equals(Object obj) {
-        if (this == obj) return true;
-        if (obj == null || !(obj instanceof Movie)) return false;
-        Movie other = (Movie) obj;
-        return this.movieId != null && this.movieId.equalsIgnoreCase(other.movieId);
     }
 
     //---generate next id---
@@ -380,9 +372,7 @@ public class Movie {
     }
 
     public static void displayMovieInfoHeader() {
-        Utils.displayInnerLine();
         System.out.printf("| %-4s | %-28s | %-19s | %-8s | %-10s |\n", "ID", "Title", "Genre", "Duration", "Age Rating");
-        Utils.displayInnerLine();
     }
 
     public void displayMovieDetails() {
@@ -391,10 +381,4 @@ public class Movie {
         String dDuration = Utils.truncate(duration, 8); 
         System.out.printf("| %-4s | %-28s | %-19s | %-8s | %-10d |\n", movieId, dTitle, dGenre, dDuration, ageRating);
     }
-
-    public static void displayEmptyMovieRow() {
-        System.out.printf("| %-4s | %-28s | %-19s | %-8s | %-10s |\n", 
-                          "-".repeat(4), "-".repeat(28), "-".repeat(19), "-".repeat(8), "-".repeat(10));
-    }
-
 }
