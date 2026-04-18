@@ -58,6 +58,6 @@ public class Utils {
         format.append("\n");
 
         System.out.printf(format.toString(), separators);
-        }
+        
     }
 }
