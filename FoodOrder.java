@@ -1,5 +1,3 @@
-//Object ob1= {new FoodOrder(), new Combo(),...}; can make a array and call the food i think
-//look at Practical 6 Q3, its a inheritance question, can take example. 
 import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
@@ -140,7 +138,7 @@ public class FoodOrder {
     public boolean equals(Object obj){
         if(obj instanceof FoodOrder){
             FoodOrder fo= (FoodOrder)obj;
-            return this.orderNo == fo.orderNo;
+            return this.totalPrice == fo.totalPrice;
         }
         else
             return false;
