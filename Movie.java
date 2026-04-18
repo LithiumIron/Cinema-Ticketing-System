@@ -215,7 +215,7 @@ public class Movie {
         System.out.printf("|ID      : %-21s|\n", movie.getMovieId());
         System.out.printf("|Title   : %-21s|\n", movie.getTitle());
         System.out.printf("|Genre   : %-21s|\n", movie.getGenre());
-        System.out.printf("|Duration: %-21s|\n", movie.getDuration());
+        System.out.printf("|Duration: %-21d|\n", movie.getDuration());
         System.out.printf("|Rating  : %-21d|\n", movie.getAgeRating());
         System.out.printf("|Status  : %-21s|\n", movie.getStatus());
         System.out.println("---------------------------------");
@@ -325,7 +325,7 @@ public class Movie {
         System.out.println("-------+----------------------+--------------+----------+--------+--------------");
 
         for (Movie m : list) {
-            System.out.printf("%-6s | %-20s | %-12s | %-8s | %-6d | %-12s%n",
+            System.out.printf("%-6s | %-20s | %-12s | %-8d | %-6d | %-12s%n",
                     m.getMovieId(),
                     Utils.truncate(m.getTitle(), 20),//shorten the title to 20 char
                     m.getGenre(),
@@ -372,7 +372,9 @@ public class Movie {
     }
 
     public static void displayMovieInfoHeader() {
+        Utils.displayInnerLine();
         System.out.printf("| %-4s | %-28s | %-19s | %-8s | %-10s |\n", "ID", "Title", "Genre", "Duration", "Age Rating");
+        Utils.displayInnerLine();
     }
 
     public void displayMovieDetails() {
@@ -381,4 +383,10 @@ public class Movie {
         String dDuration = Utils.truncate(duration, 8); 
         System.out.printf("| %-4s | %-28s | %-19s | %-8s | %-10d |\n", movieId, dTitle, dGenre, dDuration, ageRating);
     }
+
+    public static void displayEmptyMovieRow() {
+        System.out.printf("| %-4s | %-28s | %-19s | %-8s | %-10s |\n", 
+                          "-".repeat(4), "-".repeat(28), "-".repeat(19), "-".repeat(8), "-".repeat(10));
+    }
+
 }
