@@ -1,14 +1,9 @@
-import java.time.LocalDate;
-import java.time.LocalTime;
-
 public class Booking {
     //data properties
     private String bookingId;
     private Show show;
     private FoodOrder foodOrder;
     private Ticket [] tickets;
-    private LocalDate bookingDate;
-    private LocalTime bookingTime;
     private static int bookingCounter;
 
     //non-arg constructor
@@ -22,8 +17,6 @@ public class Booking {
         this.show = show;
         this.foodOrder = foodOrder;
         this.tickets = tickets;
-        this.bookingDate = LocalDate.now();
-        this.bookingTime = LocalTime.now();
         bookingCounter++;
     }
 
