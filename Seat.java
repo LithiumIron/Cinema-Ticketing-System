@@ -153,18 +153,18 @@ public class Seat {
         
         if (seats == null) {
             System.out.println("\nHall not found!");
-            Seat.goBack();
+            Utils.pause();
             return false;
         }
         //validate blank input
         if(seatInput.trim().isEmpty()){
             System.out.println("Invalid input! Please enter a seat number (e.g. A5)");
-            Seat.goBack();
+            Utils.pause();
             return false;
         }
         
         //combine seat input (e.g., C5 or Da)
-        char rowChar = Character.toUpperCase(seatInput.charAt(0));
+        char rowChar = seatInput.charAt(0);
         String colDisplay = seatInput.substring(1);
         
         int rowIndex = getRowIndex(rowChar);
@@ -176,17 +176,23 @@ public class Seat {
             
             if (seat.isBooked()) {
                 System.out.println("\nSeat " + seatInput + " is already booked!");
+                Utils.pause();
+                return false;
+
             } else {
                 seat.setBooked(true);
                 System.out.println("\nSeat " + seatInput + " booked successfully!");
                 saveToFile();
+                Utils.pause();
+                return true;
             }
         } else 
             System.out.println("\nInvalid seat! Please enter a valid seat number (e.g. A5)");
+            Utils.pause();
+            return false;
         
         
-        Seat.goBack();
-        return true;
+        
 
     }
     
@@ -199,18 +205,18 @@ public class Seat {
         if (seats == null) {
              
             System.out.println("Hall not found!");
-            Seat.goBack();
+            Utils.pause();
             return false;
         }
 
         //validate blank input
         if(seatInput.trim().isEmpty()){
             System.out.println("Invalid input! Please enter a seat number (e.g. A5)");
-            Seat.goBack();
+            Utils.pause();
             return false;
         }
 
-        char rowChar = Character.toUpperCase(seatInput.charAt(0));
+        char rowChar = seatInput.charAt(0);
         String colDisplay = seatInput.substring(1);
         
         int rowIndex = getRowIndex(rowChar);
@@ -231,7 +237,7 @@ public class Seat {
             System.out.println("\nInvalid seat! Please enter a valid seat number (e.g. A5)");
         
         
-        Seat.goBack();
+        Utils.pause();
         return true;
     }
     
@@ -306,11 +312,6 @@ public class Seat {
         return "";
     }
 
-    public static void goBack(){
-        System.out.print("\nPress Enter to go back...");
-            scan.nextLine();
-    }
-    
     // ========== FILE STORAGE ==========
     private static void saveToFile() {
         try (PrintWriter writer = new PrintWriter(new FileWriter("seats_data.txt"))) {
