@@ -4,8 +4,10 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
+import org.jcp.xml.dsig.internal.dom.Utils;
+
 public class Show {
-    //data attributes
+    //data properties
     private String showId;
     private Movie movie;
     private Cinema cinema;
@@ -33,6 +35,7 @@ public class Show {
         this.endTime = calculateEndTime();
         showCounter++;
     }
+
 
     //getters
     public String getShowId() {
@@ -93,19 +96,28 @@ public class Show {
     }
 
     //other methods
-    @Override
     public String toString() {
-        return "Movie: " + movie.getTitle() + 
+        return "Show ID: " + showId +
+        "\nMovie: " + movie.getTitle() + 
         "\nCinema: " + cinema.getCinemaName() + 
         "\nHall: " + hall.getHallId() + 
         "\nShowtime: " + startTime + 
-        "\nShowdate: " + startDate;
+        "\nEnd Time: " + endTime +
+        "\nShowdate: " + startDate +
+        "\nEnd Date: " + endDate;
+    }
+
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (!(obj instanceof Show)) return false;
+        return showId.equals(((Show) obj).showId);
     }
 
     private String generateShowId() {
         return String.format("S%05d", showCounter);
     }
 
+    //date & time method
     public static LocalDate getStartDateAsLocalDate(String startDate) {
         String start = startDate.trim();
         return LocalDate.parse(start, DateTimeFormatter.ISO_LOCAL_DATE);
@@ -204,6 +216,7 @@ public class Show {
         return end.toLocalDate().format(DateTimeFormatter.ISO_LOCAL_DATE);
     }
 
+    //Table display methods
     public static void displaySelectShowHeader(String movieTitle) {
         String safeMovieTitle = Utils.truncate(movieTitle, 45); 
         String headerText = safeMovieTitle + " : Date/Time Selection";
@@ -216,9 +229,7 @@ public class Show {
     }
 
     public static void displayShowInfoHeader() {
-        Utils.displayInnerLine();
-        System.out.printf("| %-6s | %-20s | %-15s | %-31s |\n", "ID", "Hall Name", "Show Date", "Showtime");
-        Utils.displayInnerLine();
+        System.out.printf("| %-6s | %-20s | %-15s | %-31s |\n", "ID", "Hall ID", "Show Date", "Showtime");
     }
 
     public void displayShowDetails() {
@@ -226,10 +237,5 @@ public class Show {
         String dDate = Utils.truncate(startDate, 15);
         String dTime = Utils.truncate(startTime + " - " + endTime, 31);
         System.out.printf("| %-6s | %-20s | %-15s | %-31s |\n", showId, dHall, dDate, dTime);
-    }
-
-    public static void displayEmptyShowRow() {
-        System.out.printf("| %-6s | %-20s | %-15s | %-31s |\n", 
-                          "-".repeat(6), "-".repeat(20), "-".repeat(15), "-".repeat(31));
     }
 }
