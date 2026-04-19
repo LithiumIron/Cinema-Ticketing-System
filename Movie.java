@@ -63,7 +63,6 @@ public class Movie {
     public int getAgeRating(){return ageRating;}
     public String getStatus(){return status;}
     
-    
     public static List<Movie> getAllMovies(){return movieList;}
 
     // ========= Setter ==========
@@ -207,36 +206,17 @@ public class Movie {
         return result;
     }
 
-    //---update movie---
-    public static void updateMovie(String id, Scanner scan) {
+    //---update movie status only---
+    public static void updateMovieStatus(String id, String newStatus) {
         Movie movie = findMovieById(id);
         if (movie == null) {
             System.out.println("Movie ID not found!");
             return;
         }
-
-        Utils.clearScreen(20);
-
-        System.out.println("Current movie info:");
-        System.out.println("---------------------------------");
-        System.out.printf("|ID      : %-21s|\n", movie.getMovieId());
-        System.out.printf("|Title   : %-21s|\n", movie.getTitle());
-        System.out.printf("|Genre   : %-21s|\n", movie.getGenre());
-        System.out.printf("|Duration: %-21s|\n", movie.getDuration());
-        System.out.printf("|Rating  : %-21d|\n", movie.getAgeRating());
-        System.out.printf("|Status  : %-21s|\n", movie.getStatus());
-        System.out.println("---------------------------------");
-        
-        System.out.println("\n--- Update Movie Status ---");
-        String newStatus = selectStatus(scan);
-
         movie.setStatus(newStatus);
         saveToFile();
-
         System.out.println("\nMovie status updated successfully!");
         System.out.println(movie.toString());
-
-         Utils.pause();
     }
 
     // ==================== DISPLAY METHODS ====================
@@ -245,50 +225,7 @@ public class Movie {
         printTable(movieList, "All Movies");
     }
 
-    public static void displayMoviesMenu(Scanner scan) {
-        while (true) {
-            Set<String> set = new TreeSet<>();
-            //Set: Store unique genres
-            //TreeSet: store unique genres in sorted order
-            for (Movie m : movieList) set.add(m.getGenre());
-            List<String> genres = new ArrayList<>(set);//convert set to list for indexing
-
-            System.out.println("========================================");
-            System.out.println("         DISPLAY MOVIES MENU           ");
-            System.out.println("========================================");
-
-            int i = 1;
-            for (String g : genres) {
-                System.out.println(i++ + ". " + g);
-            }
-            System.out.println(i + ". All Movies");
-            System.out.println("0. Exit");
-            System.out.print("Enter your choice (0-" + i + "): ");
-
-            int choice = Utils.getIntRange(scan, 0, i);
-
-            if (choice == 0) return;
-
-            List<Movie> list;
-            String title;
-
-            if (choice == i) {
-                list = new ArrayList<>(movieList);
-                title = "All Movies";
-            } else {
-                String g = genres.get(choice - 1);
-                list = filterByGenre(g);
-                title = g + " Movies";
-            }
-
-            Utils.clearScreen(80);
-            printTable(list, title);
-
-             Utils.pause();
-            Utils.clearScreen(80);
-        }
-    }
-
+    //---display movie summary---
     public static void displayMovieSummary() {//display number of movies for each genre
         Map<String, Integer> map = new TreeMap<>();//store genre and count in sorted order
 
@@ -323,7 +260,7 @@ public class Movie {
         return result;
     }
 
-    private static void printTable(List<Movie> list, String title) {
+    public static void printTable(List<Movie> list, String title) {
         System.out.println("====================================================================================");
         System.out.println("                             " + title.toUpperCase());
         System.out.println("====================================================================================");
@@ -351,29 +288,18 @@ public class Movie {
         System.out.println("\nTotal number of " + title.toLowerCase() + ": " + list.size());
     }
 
-    // ==================== USER INPUT METHODS ====================
-    //select movie genre
-    public static String selectGenre(Scanner scan) {
-        System.out.println("\n--- Select Genre ---");
-        for (int i = 0; i < VALID_GENRES.length; i++) {
-            System.out.println((i + 1) + ". " + VALID_GENRES[i]);
-        }
-        System.out.print("Enter your choice (1-12): ");
-        int c = Utils.getIntRange(scan, 1, VALID_GENRES.length);
-        return VALID_GENRES[c - 1];
+    // ==================== STATIC HELPER METHODS FOR DRIVER ====================
+    public static List<Movie> filterByGenreList(String genre) {
+        return filterByGenre(genre);
     }
 
-    //---select movie status---
-    public static String selectStatus(Scanner scan) {
-        System.out.println("\n--- Select Status ---");
-        for (int i = 0; i < VALID_STATUSES.length; i++) {
-            System.out.println((i + 1) + ". " + VALID_STATUSES[i]);
-        }
-        System.out.print("Enter your choice (1-3): ");
-        int c = Utils.getIntRange(scan, 1, VALID_STATUSES.length);
-        return VALID_STATUSES[c - 1];
+    public static Set<String> getAllGenres() {
+        Set<String> set = new TreeSet<>();
+        for (Movie m : movieList) set.add(m.getGenre());
+        return set;
     }
 
+    // ==================== UI DISPLAY HELPERS (no input) ====================
     public static void displaySelectMovieHeader(String cinemaName) {
         String safeCinemaName = Utils.truncate(cinemaName, 45);
         String headerText = safeCinemaName + " : Movie Selection";
