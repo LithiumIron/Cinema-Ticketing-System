@@ -42,7 +42,7 @@ public class Seat {
     public boolean isBooked() { return isBooked; }
     
     
-    private static int getRow(int hallNo) {
+    public static int getRow(int hallNo) {
         switch (hallNo) {
             case SMALL_HALL: return SMALL_ROWS;
             case MEDIUM_HALL: return MEDIUM_ROWS;
@@ -51,7 +51,7 @@ public class Seat {
         }
     }
     
-    private static int getCol(int hallNo) {
+    public static int getCol(int hallNo) {
         switch (hallNo) {
             case SMALL_HALL: return SMALL_COLS;
             case MEDIUM_HALL: return MEDIUM_COLS;
