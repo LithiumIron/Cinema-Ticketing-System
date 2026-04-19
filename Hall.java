@@ -145,88 +145,41 @@ public class Hall {
         }
     }
 
-
-    //---add hall by type---
-    public static void addHallByType(int typeChoice) {
-        String type = "";
-        switch (typeChoice) {
-            case 1: type = "Small";break;
-            case 2: type = "Medium";break;
-            case 3: type = "Large";break;
-        };
-
-        Hall h = new Hall(type);
-        hallList.add(h);
-        saveToFile();
-
-        System.out.println("\nHall added successfully!");
-        System.out.println("ID: " + h.getHallId());
-        System.out.println("Type: " + h.getType());
-    }
-
-    //---find hall by id---
-    private static Hall findHallById(String id) {
+    // [MODIFIED] Changed from private to public, so driver can use it
+    public static Hall findHallById(String id) {
         for (Hall h : hallList) {
             if (h.getHallId().equalsIgnoreCase(id)) return h;
         }
         return null;
     }
 
-    //---delete hall prompt--- 
-    public static void deleteHallPrompt(Scanner scan) { //mh 19/4/26 2:37pm
-        displayAllHalls();
-        while (true) {
-            System.out.print("Enter Hall ID to delete (or X to cancel): ");
-            String id = scan.nextLine().trim();
-            if (id.equalsIgnoreCase("X")) {
-                System.out.println("Deletion cancelled.");
-                return;
-            }
-            Hall h = findHallById(id);
-            if (h == null) {
-                System.out.println("  [!] Hall ID not found! Please try again.");
-                continue;
-            }
-            System.out.print("Are you sure? (y/n): ");
-            String confirm = scan.nextLine();
-            if (confirm.equalsIgnoreCase("y")) {
-                hallList.remove(h);
-                saveToFile();
-                System.out.println("Hall deleted successfully!");
-            } else {
-                System.out.println("Deletion cancelled.");
-            }
-            return;
-        }
+    // [MODIFIED] Replaced deleteHallPrompt(Scanner) with pure business method
+    public static boolean deleteHallById(String id) {
+        Hall h = findHallById(id);
+        if (h == null) return false;
+        hallList.remove(h);
+        saveToFile();
+        return true;
     }
 
-    // ==================== DISPLAY METHODS ====================
-
-    //---display hall summary---
-    public static void displayHallSummary(Scanner scan) {
-        int small = 0, medium = 0, large = 0;
-
-        for (Hall h : hallList) {
-            switch (h.getType()) {
-                case "Small": small++;break;
-                case "Medium": medium++;break;
-                case "Large": large++;break;
-            }
+    // [MODIFIED] Replaced void addHallByType with version that returns Hall and has no print statements
+    public static Hall addHallByType(int typeChoice) {
+        String type = "";
+        switch (typeChoice) {
+            case 1: type = "Small"; break;
+            case 2: type = "Medium"; break;
+            case 3: type = "Large"; break;
         }
-
-        System.out.println("\n========= HALL SUMMARY =========");
-        System.out.println("Small Hall  : " + small);
-        System.out.println("Medium Hall : " + medium);
-        System.out.println("Large Hall  : " + large);
-        System.out.println("-------------------------------");
-        System.out.println("Total Number of Halls: " + hallList.size());
-        System.out.println("================================");
-
-        Utils.pause();
+        Hall h = new Hall(type);
+        hallList.add(h);
+        saveToFile();
+        return h;
     }
 
-    //---display all halls---
-    private static void displayAllHalls() {
+    // ==================== DISPLAY METHODS (no input) ====================
+
+    // [MODIFIED] Changed from private to public for driver access
+    public static void displayAllHalls() {
         System.out.println("\n===== ALL HALLS =====");
         for (Hall h : hallList) {
             System.out.println("ID: " + h.getHallId() + " | Type: " + h.getType());
@@ -234,8 +187,22 @@ public class Hall {
         System.out.println("=====================\n");
     }
 
-    //---display All Hall Details---
-    public static void displayAllHallsDetailed(Scanner scan) {
+    // [MODIFIED] Replaced displayHallSummary(Scanner) with method that returns data string
+    public static String getHallSummaryData() {
+        int small = 0, medium = 0, large = 0;
+        for (Hall h : hallList) {
+            switch (h.getType()) {
+                case "Small": small++; break;
+                case "Medium": medium++; break;
+                case "Large": large++; break;
+            }
+        }
+        return String.format("Small Hall  : %d\nMedium Hall : %d\nLarge Hall  : %d\nTotal Halls : %d",
+                small, medium, large, hallList.size());
+    }
+
+    // [MODIFIED] Removed Scanner parameter and Utils.pause() – pure display now
+    public static void displayAllHallsDetailed() {
         Utils.clearScreen(80);
 
         System.out.println("------------------------------------------");
@@ -250,35 +217,17 @@ public class Hall {
         }
 
         System.out.println("\nTotal halls: " + hallList.size());
-
-        Utils.pause();
+        // [MODIFIED] Removed Utils.pause() – driver will handle pausing
     }
 
     // ==================== SEAT MAP DISPLAY ====================
-    public static void displaySeatMapMenu(Scanner scan) {
-        while (true) {
-            Utils.clearScreen(80);
-
-            System.out.println("======= VIEW HALL SEAT MAP =======");
-            System.out.println("1. Small Hall");
-            System.out.println("2. Medium Hall");
-            System.out.println("3. Large Hall");
-            System.out.println("0. Back");
-            System.out.print("Enter choice: ");
-
-            int c = Utils.getIntRange(scan, 0, 3);
-
-            if (c == 0) return;
-
-            Utils.clearScreen(80);
-
-            switch (c) {
-                case 1: printSmallHall();break;
-                case 2: printMediumHall();break;
-                case 3: printLargeHall();break;
-            }
-
-            Utils.pause();
+    
+    // [MODIFIED] Replaced displaySeatMapMenu(Scanner) with pure display method
+    public static void printHallSeatMapByType(int typeChoice) {
+        switch (typeChoice) {
+            case 1: printSmallHall(); break;
+            case 2: printMediumHall(); break;
+            case 3: printLargeHall(); break;
         }
     }
 
@@ -333,11 +282,8 @@ public class Hall {
     }
 
     //=========== customer Section ===========
-
                                                                                                                                                                                                     
-  
-
-// Display seat map for this hall
+    // Display seat map for this hall
     public void displaySeatMap() {
         int hallNo = getSeatHallNumber();
         Utils.clearScreen(80);
@@ -367,17 +313,13 @@ public class Hall {
     
     // Book a seat 
     public void bookSeat(String seatInput) {
-        
         int hallNo = getSeatHallNumber();
         Seat.bookSeat(hallNo, seatInput);  
-        
     }
-    
     
     // Cancel a booking in this hall
     public void cancelBooking(String seatInput) {
         int hallNo = getSeatHallNumber();
         Seat.cancelBooking(hallNo, seatInput);
     }
-
 }
