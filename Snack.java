@@ -51,7 +51,7 @@ public class Snack extends FoodOrder {
     public void setSnackID(String[] snackID) {this.snackID = snackID;}
     public void setSnack(Map<String, String> snack) {this.snack = snack;}
 
-    public void addSnack(int choice, FoodOrder order) {
+    public boolean addSnack(int choice, FoodOrder order) {
         if (choice >= 1 && choice <= snackID.length) {
             String id = snackID[choice - 1];  // Convert 1 to "S01", 2 to "S02"
             String name = snack.get(id);
@@ -62,11 +62,17 @@ public class Snack extends FoodOrder {
             if (size == 1) {
                 price = order.largeCost(price);
                 order.addItem(name + " (Large)", price);
+                return true;
             } 
             else if (size == 2) {
                 order.addItem(name + " (Regular)", price);
+                return true;
+            
             }
+            else
+            	return false;
         }
+        else return false;
     }
 
     public String toString(){return getSnackAndCost();}
