@@ -4,20 +4,18 @@ private String ticketID;
 private String ticketType;
 private double ticketAmt;
 
-private static int counter = 1;
+private static int ticketCounter = 1;
 
 
 //-------------------- methods --------------
 //no arg cons
 public Ticket(){
-	this.ticketID = String.format("T%03d", counter++);
-	this.ticketType = " ";
-	this.ticketAmt = 0.0;
+	this(" ", 0.0);
 }
   
 //cons with args
 public Ticket(String ticketType, double ticketAmt){
-	this.ticketID = String.format("T%03d", counter++);
+	this.ticketID = generateTicketID();
 	this.ticketType = ticketType;
 	this.ticketAmt = ticketAmt;
 }
@@ -55,6 +53,10 @@ public static String ticketHeader(){
 
 public static String noOfTickets(){
 	return "Please enter number of tickets : ";
+}
+
+private String generateTicketID() {
+    return String.format("T%03d", ticketCounter++);
 }
 
 public static double getTicketPriceByType(String typeName) {
