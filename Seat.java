@@ -41,7 +41,7 @@ public class Seat {
     public int getSeatNo() { return seatNo; }
     public boolean isBooked() { return isBooked; }
     
-    // Setter
+    
     private static int getRow(int hallNo) {
         switch (hallNo) {
             case SMALL_HALL: return SMALL_ROWS;
@@ -59,6 +59,10 @@ public class Seat {
             default: return 0;
         }
     }
+
+    //setter
+    public void setRow(int row){this.row=row;}
+    public void setCol(int col){this.col=col;}
     public void setSeatNo(int seatNo) { this.seatNo = seatNo; }
     public void setBooked(boolean booked) { this.isBooked = booked; }
     
