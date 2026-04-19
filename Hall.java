@@ -201,7 +201,7 @@ public class Hall {
                 small, medium, large, hallList.size());
     }
 
-    // [MODIFIED] Removed Scanner parameter and Utils.pause() – pure display now
+    
     public static void displayAllHallsDetailed() {
         Utils.clearScreen(80);
 
@@ -217,7 +217,7 @@ public class Hall {
         }
 
         System.out.println("\nTotal halls: " + hallList.size());
-        // [MODIFIED] Removed Utils.pause() – driver will handle pausing
+        
     }
 
     // ==================== SEAT MAP DISPLAY ====================
