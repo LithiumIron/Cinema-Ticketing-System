@@ -169,7 +169,7 @@ public String toString(String rewardCode, List<Reward> allRewards) {
                     Discount d = (Discount) r; 
                     
                     double percentage = d.getPercentage();
-                    discountDisplay = String.format("-RM %.2f (%.0f%%)", this.discountAmt, percentage);
+                    discountDisplay = String.format("-RM %6.2f (%.0f%%)", this.discountAmt, percentage);
                 } 
 
                 break;
@@ -178,10 +178,10 @@ public String toString(String rewardCode, List<Reward> allRewards) {
     }
 
     return String.format("%-16s %s\n" + "%-16s %s\n\n" +
-                        "%-16s RM %.2f\n" + "%-16s RM %.2f\n" +
+                        "%-16s  RM %6.2f\n" + "%-16s  RM %6.2f\n" +
                         "%-16s %s\n" +      
                         "%-16s %s\n" + 
-                        "%-16s RM %.2f\n",
+                        "%-16s  RM %6.2f\n",
                         "Payment ID    :", paymentID,
                         "Payment Date  :", paymentDate,
                         "Sub Total     :", subTotal,
