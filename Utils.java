@@ -60,4 +60,22 @@ public class Utils {
         System.out.printf(format.toString(), separators);
         
     }
+
+    
+    public static int getIntRangeWithExit (Scanner sc, int min, int max, String exitKey){ //mh for driverprogram addhall() 19/4/26 2：33pm
+		while (true) {
+			System.out.printf("Enter choice (%d-%d, or %s to cancel): ", min, max, exitKey);
+			String input = sc.nextLine().trim();
+			if (input.equalsIgnoreCase(exitKey)){
+				return -1;
+			}
+			try {
+				int val = Integer.parseInt(input);
+				if (val >= min && val <= max){
+					return val;
+				}
+			}catch (NumberFormatException ignored){}
+			System.out.println("Invalid input! Please enter a number between " + min + " and " + max + ".");
+		}
+	}
 }
