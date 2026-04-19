@@ -1,7 +1,5 @@
 import java.util.ArrayList;
 
-import org.jcp.xml.dsig.internal.dom.Utils;
-
 public class Cinema {
     //data properties
     private String cinemaId;
