@@ -15,7 +15,7 @@ public class Combo extends FoodOrder {
 		initializeMenu();
     }
     
-    private void initializeMenu() {
+    public void initializeMenu() {
         combo.put("C01", "Popcorn + Sprite (Regular)");
         combo.put("C02", "Hotdog x2 + Cola (Regular)");
         combo.put("C03", "French Fries + 100 Plus (Regular)");

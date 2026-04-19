@@ -15,7 +15,7 @@ public class Drink extends FoodOrder {
 		initializeMenu();	
     }
     
-   private void initializeMenu() {
+   public void initializeMenu() {
         drink.put("D01", "Sprite");
         drink.put("D02", "Cola");
         drink.put("D03", "100 Plus");

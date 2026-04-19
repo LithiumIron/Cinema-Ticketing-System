@@ -16,7 +16,7 @@ public class Snack extends FoodOrder {
     }
 
 
-    private void initializeMenu() {
+    public void initializeMenu() {
         snack.put("S01", "Popcorn");
         snack.put("S02", "Hotdog");
         snack.put("S03", "French Fries");
