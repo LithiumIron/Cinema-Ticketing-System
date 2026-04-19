@@ -41,7 +41,6 @@ public class Movie {
         this.duration = duration;
         this.ageRating = ageRating;
         this.status = status;
-        nextIdNumber++;
     }
     
     //cons used when creating a new movie
@@ -53,6 +52,7 @@ public class Movie {
         this.ageRating = ageRating;
         this.status = status;
         this.movieId = generateNextId();
+        nextIdNumber++;
     }
 
     // ========== Getter ==========
