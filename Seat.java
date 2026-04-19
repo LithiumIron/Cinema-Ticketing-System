@@ -24,6 +24,9 @@ public class Seat {
     private int seatNo;
     private boolean isBooked;
     
+    public Seat(){
+        this(0,0);
+    }
     
     public Seat(int row, int col) {
         this.row = row;
