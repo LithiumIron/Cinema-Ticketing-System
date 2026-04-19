@@ -2,7 +2,7 @@ import java.io.*;
 import java.util.*;
 
 public class Seat {
-    public static Scanner scan=new Scanner(System.in);
+
     // Hall no
     public static final int SMALL_HALL = 1;
     public static final int MEDIUM_HALL = 2;
