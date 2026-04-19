@@ -249,7 +249,7 @@ public class Seat {
     }
     
     // ========== GET AVAILABLE/BOOKED COUNTS ==========
-    private static int getAvailableCount(int hallNo) {
+    public static int getAvailableCount(int hallNo) {
         Seat[][] seats = hallSeats.get(hallNo);
         int rows = getRow(hallNo);
         int cols = getCol(hallNo);
@@ -265,13 +265,13 @@ public class Seat {
         return count;
     }
     
-    private static int getBookedCount(int hallNo) {
+    public static int getBookedCount(int hallNo) {
         return (getRow(hallNo) * getCol(hallNo)) - getAvailableCount(hallNo);
     }
     
     //======================================================
 
-    private static int getRowIndex(char rowChar) {
+    public static int getRowIndex(char rowChar) {
         switch (rowChar) {
             case 'A': return 0;
             case 'B': return 1;
@@ -288,7 +288,7 @@ public class Seat {
         }
     }
     
-    private static int getColIndex(String colDisplay, int hallNo) {
+    public static int getColIndex(String colDisplay, int hallNo) {
         int maxCol = getCol(hallNo);
         
         try {
@@ -308,7 +308,7 @@ public class Seat {
         return -1;
     }
     
-    private static String getColDisplay(int col) {
+    public static String getColDisplay(int col) {
         if (col <= 9) return String.valueOf(col);
         if (col == 10) return "a";
         if (col == 11) return "b";
@@ -320,7 +320,7 @@ public class Seat {
     }
 
     // ========== FILE STORAGE ==========
-    private static void saveToFile() {
+    public static void saveToFile() {
         try (PrintWriter writer = new PrintWriter(new FileWriter("seats_data.txt"))) {
             for (Map.Entry<Integer, Seat[][]> entry : hallSeats.entrySet()) {
                 int hallNo = entry.getKey();
@@ -341,7 +341,7 @@ public class Seat {
         }
     }
     
-    private static void loadFromFile() {
+    public static void loadFromFile() {
         File file = new File("seats_data.txt");
         if (!file.exists()) return;
         
