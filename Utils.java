@@ -2,6 +2,7 @@ import java.util.Scanner;
 
 public class Utils {
     public static Scanner sc=new Scanner(System.in);
+    
     //clear screen
     public static void clearScreen(int lines) {
         for (int i = 0; i < lines; i++) System.out.println();
@@ -16,7 +17,7 @@ public class Utils {
     //check Int input
     public static int getInt(Scanner sc) {
         while (!sc.hasNextInt()) {//if invalid then retry until valid input
-            System.out.print("Please enter a number: ");
+            System.out.print("[!] Invalid input! Letters are not supported.\nPlease enter a number: ");
             sc.next();
         }
         int v = sc.nextInt();
@@ -29,7 +30,7 @@ public class Utils {
         while (true) {
             int v = getInt(sc);
             if (v >= min && v <= max) return v;
-            System.out.printf("Please enter a number between %d and %d: ", min, max);
+            System.out.printf("[!] Invalid number range!\nPlease enter a number between %d and %d: ", min, max);
         }
     }
 
@@ -64,7 +65,7 @@ public class Utils {
     
     public static int getIntRangeWithExit (Scanner sc, int min, int max, String exitKey){ //mh for driverprogram addhall() 19/4/26 2：33pm
 		while (true) {
-			System.out.printf("Enter choice (%d-%d, or %s to cancel): ", min, max, exitKey);
+			System.out.printf("\nEnter choice (%d-%d, or %s to cancel): ", min, max, exitKey);
 			String input = sc.nextLine().trim();
 			if (input.equalsIgnoreCase(exitKey)){
 				return -1;
@@ -75,7 +76,53 @@ public class Utils {
 					return val;
 				}
 			}catch (NumberFormatException ignored){}
-			System.out.println("Invalid input! Please enter a number between " + min + " and " + max + ".");
+			System.out.println("[!] Invalid number range!\nPlease enter a number between " + min + " and " + max + ".");
 		}
 	}
+	
+	
+    public static Integer promptIntWithCancel(Scanner sc, String prompt, int min, int max, String cancelKey) {
+        while (true) {
+            System.out.print(prompt + " (" + min + "-" + max + ", or " + cancelKey + " to cancel): ");
+            String input = sc.nextLine().trim();
+            if (input.equalsIgnoreCase(cancelKey)) {
+                return null;
+            }
+            try {
+                int val = Integer.parseInt(input);
+                if (val >= min && val <= max) {
+                    return val;
+                } else {
+                    System.out.println("[!] Invalid range. Please enter a number between " + min + " and " + max + ".");
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("[!] Invalid input. Please enter a number.");
+            }
+        }
+    }
+
+    
+    public static String promptStringWithCancel(Scanner sc, String prompt, String cancelKey) {
+        while (true) {
+            System.out.print(prompt + " (or " + cancelKey + " to cancel): ");
+            String input = sc.nextLine().trim();
+            if (input.equalsIgnoreCase(cancelKey)) {
+                return null;
+            }
+            if (!input.isEmpty()) {
+                return input;
+            }
+            System.out.println("[!] Input cannot be empty.");
+        }
+    }
+
+    
+    public static Integer promptSelectionWithCancel(Scanner sc, String title, String[] options, String cancelKey) {
+        System.out.println("\n--- " + title + " (or " + cancelKey + " to cancel) ---");
+        for (int i = 0; i < options.length; i++) {
+            System.out.println((i + 1) + ". " + options[i]);
+        }
+        System.out.println("------------------------------------");
+        return promptIntWithCancel(sc, "Enter choice", 1, options.length, cancelKey);
+    }
 }
