@@ -49,6 +49,13 @@ public class Hall {
         return "ID: " + getHallId() + " | Type: " + getType();
     }
 
+    // Register an existing Hall object into hallList (used during cinema init)
+    public static void registerHall(Hall hall) {
+        if (!hallList.contains(hall)) {
+            hallList.add(hall);
+        }
+    }
+
     //generate next hall id
     private static String generateNextId() {
         String id = String.format("H%03d", nextIdNumber);
