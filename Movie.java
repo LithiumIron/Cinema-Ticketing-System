@@ -41,6 +41,7 @@ public class Movie {
         this.duration = duration;
         this.ageRating = ageRating;
         this.status = status;
+        nextIdNumber++;
     }
     
     //cons used when creating a new movie
@@ -81,7 +82,6 @@ public class Movie {
     //---generate next id---
     private static String generateNextId() {
         String id = String.format("M%03d", nextIdNumber);//M001,M002,M003
-        nextIdNumber++;
         saveCounter();
         //this method generates a unique movei ID using a counter and 
         //saves the updated counter value to ensure IDs remain unique
