@@ -77,23 +77,21 @@ public String validateWalletOwner(){
 }
 
 public String validateWalletAccID(){
-	if(walletAccID.trim().isEmpty()){
-		System.out.println("Wallet account ID cannot be empty!\n");
-	} else if(!walletAccID.matches("\\d+")){
-		System.out.println("Wallet account ID must contain digits only!\n");
-	} else if(!walletAccID.startsWith("01")){
-		System.out.println("Wallet account ID must start with '01'!\n");
-	} else if(walletAccID.startsWith("010") || walletAccID.startsWith("011")){
-		//ID that start with 010 and 011 must exactly 11 digits
-		if(walletAccID.length() != 11)
-			System.out.println("Wallet account ID starting with 010 or 011 must be 11 digits in total.\n");
-	} else{
-		//all other ID must exactly 10 digits
-		if(walletAccID.length() != 10)
-			System.out.println("Wallet account ID must be 10 digits in total.\n");
-	}
-	return "";
-} 
+    if(walletAccID.trim().isEmpty()){
+        return "Wallet account ID cannot be empty!";
+    } else if(!walletAccID.matches("\\d+")){
+        return "Wallet account ID must contain digits only!";
+    } else if(!walletAccID.startsWith("01")){
+        return "Wallet account ID must start with '01'!";
+    } else if(walletAccID.startsWith("010") || walletAccID.startsWith("011")){
+        if(walletAccID.length() != 11)
+            return "Wallet account ID starting with 010 or 011 must be 11 digits.";
+    } else{
+        if(walletAccID.length() != 10)
+            return "Wallet account ID must be 10 digits in total.";
+    }
+    return ""; 
+}
 
 public String toString(){
 	if(walletType == 1)
