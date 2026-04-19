@@ -172,30 +172,31 @@ public class Hall {
         return null;
     }
 
-    //---delete hall prompt---
-    public static void deleteHallPrompt(Scanner scan) {
+    //---delete hall prompt--- 
+    public static void deleteHallPrompt(Scanner scan) { //mh 19/4/26 2:37pm
         displayAllHalls();
-
-        System.out.print("Enter Hall ID to delete: ");
-        String id = scan.nextLine().trim();
-
-        Hall h = findHallById(id);
-        if (h == null) {
-            System.out.println("Hall ID not found!");
-            Utils.pause();
+        while (true) {
+            System.out.print("Enter Hall ID to delete (or X to cancel): ");
+            String id = scan.nextLine().trim();
+            if (id.equalsIgnoreCase("X")) {
+                System.out.println("Deletion cancelled.");
+                return;
+            }
+            Hall h = findHallById(id);
+            if (h == null) {
+                System.out.println("  [!] Hall ID not found! Please try again.");
+                continue;
+            }
+            System.out.print("Are you sure? (y/n): ");
+            String confirm = scan.nextLine();
+            if (confirm.equalsIgnoreCase("y")) {
+                hallList.remove(h);
+                saveToFile();
+                System.out.println("Hall deleted successfully!");
+            } else {
+                System.out.println("Deletion cancelled.");
+            }
             return;
-        }
-
-        System.out.print("Are you sure? (y/n): ");
-        String confirm = scan.nextLine();
-
-        if (confirm.equalsIgnoreCase("y")) {
-            hallList.remove(h);
-            saveToFile();
-            System.out.println("Hall deleted successfully!");
-            // Counter is NOT decreased, so IDs remain unique forever.
-        } else {
-            System.out.println("Deletion cancelled.");
         }
     }
 
