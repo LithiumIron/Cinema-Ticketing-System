@@ -1426,16 +1426,16 @@ public class Cinemadriver {
 
     private static void initializeMovie(){
         if (movieList.isEmpty()) {
-            movieList.add(new Movie("M001", "Inception",                           "Sci-Fi",    "2h 28m", 13, "Now Showing"));
-            movieList.add(new Movie("M002", "The Conjuring",                       "Horror",    "1h 52m", 18, "Now Showing"));
-            movieList.add(new Movie("M003", "Toy Story 4",                         "Animation", "1h 40m",  0, "Now Showing"));
-            movieList.add(new Movie("M004", "The Dark Knight",                     "Action",    "2h 32m", 13, "Now Showing"));
-            movieList.add(new Movie("M005", "Avengers: Endgame",                   "Action",    "3h 01m", 13, "Now Showing"));
-            movieList.add(new Movie("M006", "Gladiator",                           "Action",    "2h 35m", 18, "Now Showing"));
-            movieList.add(new Movie("M007", "Despicable Me 4",                     "Animation", "1h 34m",  0, "Now Showing"));
-            movieList.add(new Movie("M008", "The Hangover",                        "Comedy",    "1h 40m", 18, "Now Showing"));
-            movieList.add(new Movie("M009", "Interstellar",                        "Sci-Fi",    "2h 49m", 13, "Now Showing"));
-            movieList.add(new Movie("M010", "Spider-Man: Across the Spider-Verse", "Animation", "2h 20m",  0, "Now Showing"));
+            movieList.add(new Movie("Inception",                           "Sci-Fi",    "2h 28m", 13, "Now Showing"));
+            movieList.add(new Movie("The Conjuring",                       "Horror",    "1h 52m", 18, "Now Showing"));
+            movieList.add(new Movie("Toy Story 4",                         "Animation", "1h 40m",  0, "Now Showing"));
+            movieList.add(new Movie("The Dark Knight",                     "Action",    "2h 32m", 13, "Now Showing"));
+            movieList.add(new Movie("Avengers: Endgame",                   "Action",    "3h 01m", 13, "Now Showing"));
+            movieList.add(new Movie("Gladiator",                           "Action",    "2h 35m", 18, "Now Showing"));
+            movieList.add(new Movie("Despicable Me 4",                     "Animation", "1h 34m",  0, "Now Showing"));
+            movieList.add(new Movie("The Hangover",                        "Comedy",    "1h 40m", 18, "Now Showing"));
+            movieList.add(new Movie("Interstellar",                        "Sci-Fi",    "2h 49m", 13, "Now Showing"));
+            movieList.add(new Movie("Spider-Man: Across the Spider-Verse", "Animation", "2h 20m",  0, "Now Showing"));
         }
     }
 
@@ -1585,7 +1585,7 @@ public class Cinemadriver {
         String  errorMessage  = "";
         boolean isSelectingId = false;
 
-        List<Movie> availableMovies = new ArrayList<>();
+        List<Movie> availableMovies = movieList;
         LocalDateTime now = LocalDateTime.now();
         for (Show show : showList) {
             if (show.getCinema().getCinemaId().equals(selectedCinema.getCinemaId())) {
@@ -1614,7 +1614,7 @@ public class Cinemadriver {
             Movie.displayMovieInfoHeader();
             Utils.displayLine();
 
-            for (int i = 0; i < 10; i++) {
+            for (int i = 0; i < availableMovies.size(); i++) {
                 if (i < filteredList.size()) filteredList.get(i).displayMovieDetails();
                 else Utils.displayEmptyRow(4, 28, 19, 8, 10);
             }
@@ -1886,8 +1886,15 @@ public class Cinemadriver {
                 System.out.print("  Select Snack ID (1-5) or 0 to go back: ");
                 try {
                     int choice = Integer.parseInt(scanner.nextLine().trim());
-                    if (choice >= 1 && choice <= 5) { ((Snack) menus[0]).addSnack(choice, customerOrder); System.out.println("  [*] Snack added to cart!"); Utils.pause(); }
-                    else if (choice != 0) errorMessage = "Invalid ID! Please enter 1 to 5.";
+                    if (choice >= 1 && choice <= 5) { 
+                        boolean isSelectedSize=((Snack) menus[0]).addSnack(choice, customerOrder); 
+                    	if (isSelectedSize==true)
+                    		System.out.println("  [*] Snack added to cart!"); 
+                    	else
+                    		System.out.println(" [*] Returning to food & beverage menu...");
+                    	Utils.pause(); 
+                    	}
+                        else if (choice != 0) errorMessage = "Invalid ID! Please enter 1 to 5.";
                 } catch (NumberFormatException e) { errorMessage = "Invalid input! Please enter numbers only."; }
             } else if (input.equals("2")) {
                 System.out.println("\n  --- DRINKS ---");
@@ -1895,8 +1902,15 @@ public class Cinemadriver {
                 System.out.print("  Select Drink ID (1-5) or 0 to go back: ");
                 try {
                     int choice = Integer.parseInt(scanner.nextLine().trim());
-                    if (choice >= 1 && choice <= 5) { ((Drink) menus[1]).addDrink(choice, customerOrder); System.out.println("  [*] Drink added to cart!"); Utils.pause(); }
-                    else if (choice != 0) errorMessage = "Invalid ID! Please enter 1 to 5.";
+                    if (choice >= 1 && choice <= 5) { 
+                        boolean isSelectedSize=((Drink) menus[1]).addDrink(choice, customerOrder); 
+                    	if (isSelectedSize==true)
+                    		System.out.println("  [*] Drink added to cart!"); 
+                    	else
+                    		System.out.println(" [*] Returning to food & beverage menu...");
+                    	Utils.pause(); 
+                    	}
+                        else if (choice != 0) errorMessage = "Invalid ID! Please enter 1 to 5.";
                 } catch (NumberFormatException e) { errorMessage = "Invalid input! Please enter numbers only."; }
             } else if (input.equals("3")) {
                 System.out.println("\n  --- COMBOS ---");
