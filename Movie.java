@@ -183,7 +183,6 @@ public class Movie {
         }
         movieList.remove(m);
         saveToFile();
-        System.out.println("Movie deleted successfully!");
         // Counter is NOT decreased, so IDs remain unique forever.
     }
 
