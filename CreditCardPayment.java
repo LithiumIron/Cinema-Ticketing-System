@@ -133,6 +133,14 @@ public static String creditCardHeader(){
 							" ===========================", "|    Credit Card Payment    |", 
 								" ===========================");
 }
+
+public boolean equals(Object obj) {
+	if (!super.equals(obj)) return false;
+
+    CreditCardPayment other = (CreditCardPayment) obj;
+    return this.cardNumber.equals(other.cardNumber);
+ }
+
 public String toString(){
 	return "\nCard holder name  : " + cardHolder +
 		"\nCard expire(MM/YY): " + String.format("%02d", expireMonth) + "/" + expireYear;
