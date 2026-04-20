@@ -32,6 +32,14 @@ public String toString(){
 			"Enter your choice for payment method : ";
 }
 
+public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null) return false;
+        if (!(obj instanceof PaymentMethod)) return false;
+		PaymentMethod other = (PaymentMethod) obj;
+        return this.methodType == other.methodType;
+}
+
 public static String validatePayMethod(int payMethod){
 	if(payMethod == 1) return "Credit Card is selected\n.";
 	if(payMethod == 2) return "E-wallet is selected\n.";	
