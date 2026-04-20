@@ -157,6 +157,18 @@ public class TicketValidation {
     	}
 	}
     @Override
+	public boolean equals(Object obj) {
+    	if (this == obj) return true;
+    	if (obj == null) return false;
+        if (!(obj instanceof TicketValidation)) return false;
+
+    	TicketValidation other = (TicketValidation) obj;
+
+    
+    	return this.ticket.equals(other.ticket) &&
+           this.showtime.equals(other.showtime);
+	}
+	
     public String toString() {
         return "TicketValidation {"
                 + "\n  Ticket   : " + (ticket != null ? ticket.getTicketID() : "null")
