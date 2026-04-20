@@ -93,6 +93,13 @@ public String validateWalletAccID(){
     return ""; 
 }
 
+public boolean equals(Object obj) {
+	if (!super.equals(obj)) return false;
+
+    EWalletPayment other = (EWalletPayment) obj;
+    return this.walletAccID.equals(other.walletAccID);
+}
+
 public String toString(){
 	if(walletType == 1)
 		return "\nWallet Type       : Touch n' Go" +
