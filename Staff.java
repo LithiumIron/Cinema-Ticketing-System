@@ -43,7 +43,6 @@ public class Staff extends User {
         System.out.println("  |  [4] Generate Reports        |");
         System.out.println("  |  [5] Delete a Customer       |");
         System.out.println("  |  [6] Manage System           |");
-        System.out.println("  |  [7] Validate Ticket         |");
         System.out.println("  |  [0] Logout                  |");
         System.out.println("  ================================");
     }
