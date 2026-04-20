@@ -1,11 +1,9 @@
-
 public class Booking {
     //data properties
     private String bookingId;
     private Show show;
     private FoodOrder foodOrder;
-    private Ticket[] tickets;
-    private String customerID;
+    private Ticket [] tickets;
     private static int bookingCounter;
 
     //non-arg constructor
@@ -15,45 +13,34 @@ public class Booking {
 
     //constructor with argument
     public Booking(Show show, FoodOrder foodOrder, Ticket [] tickets){
-    	this.bookingId = generateBookingId();
+        this.bookingId = generateBookingId();
         this.show = show;
         this.foodOrder = foodOrder;
         this.tickets = tickets;
         bookingCounter++;
     }
 
-    //getter
-    public Show getShow() {
+    public Show getShow(){
         return show;
     }
 
-    public FoodOrder getFoodOrder() {
+    public FoodOrder getFoodOrder(){
         return foodOrder;
     }
 
-    public Ticket[] getTickets() {
+    public Ticket[] getTickets(){
         return tickets;
     }
-    
-    public String getCustomerID(){
-    	return customerID;
-    }
 
-    //setter
-    public void setCustomerID(String customerID){
-        this.customerID = customerID;
-    }
-
-    
     //other methods
-    public String toString() {
+    public String toString(){
         return "Booking Movie :" + this.getShow().getMovie() +
                "\nVenue : " +
                "\nCinema :" + this.getShow().getCinema() +
                "\nHall : Hall " + this.getShow().getHall().getHallId() +
                "\nFood Order :" + this.getFoodOrder();
     }
-    
+
     public boolean equals(Object obj) {
         if (this == obj) return true;
         if (!(obj instanceof Booking)) return false;
@@ -63,5 +50,4 @@ public class Booking {
     private String generateBookingId(){
         return String.format("B%03d", bookingCounter);
     }
-
 }
